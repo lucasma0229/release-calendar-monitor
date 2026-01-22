@@ -11,22 +11,18 @@ from bs4 import BeautifulSoup
 STATE_PATH = Path("state.json")
 
 SITES = [
-    # A: SneakerNews Air Jordan release dates (contains 2026 section)
     {
         "name": "A | SneakerNews | Air Jordan Release Dates",
         "url": "https://sneakernews.com/air-jordan-release-dates/",
     },
-    # B: SneakerNews general release dates calendar (often updated)
     {
         "name": "B | SneakerNews | Release Dates Calendar",
         "url": "https://sneakernews.com/release-dates/",
     },
-    # C: SBD sneaker release dates
     {
         "name": "C | SneakerBarDetroit | Sneaker Release Dates",
         "url": "https://sneakerbardetroit.com/sneaker-release-dates/",
     },
-    # D: SBD Air Jordan release dates
     {
         "name": "D | SneakerBarDetroit | Air Jordan Release Dates",
         "url": "https://sneakerbardetroit.com/air-jordan-release-dates/",
@@ -38,30 +34,24 @@ POLITE_SLEEP_SECONDS = 2
 MAX_DIFF_LINES = 40
 
 
-def load_state() -> dict:
+def load_state():
     if STATE_PATH.exists():
         return json.loads(STATE_PATH.read_text(encoding="utf-8"))
     return {}
 
 
-def save_state(state: dict) -> None:
+def save_state(state):
     STATE_PATH.write_text(
         json.dumps(state, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
 
 
-def sha256_text(text: str) -> str:
+def sha256_text(text):
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
-def normalize_text(raw: str) -> str:
-    """
-    把页面文本压平，减少广告/布局小变化造成的误报：
-    - 去空行、去多余空白
-    - 优先保留“更像条目”的行：含数字 或 较长的行
-    - 去重（保持顺序）
-    """
+def normalize_text(raw):
     lines = [ln.strip() for ln in raw.splitlines()]
     lines = [ln for ln in lines if ln]
 
@@ -82,7 +72,7 @@ def normalize_text(raw: str) -> str:
     return "\n".join(uniq)
 
 
-def fetch_page_text(url: str) -> str:
+def fetch_page_text(url):
     headers = {
         "User-Agent": "Mozilla/5.0 (compatible; ReleaseCalendarMonitor/1.0)",
         "Accept-Language": "en-US,en;q=0.9",
@@ -99,7 +89,7 @@ def fetch_page_text(url: str) -> str:
     return normalize_text(text)
 
 
-def diff_summary(old: str, new: str) -> str:
+def diff_summary(old, new):
     old_lines = (old or "").splitlines()
     new_lines = (new or "").splitlines()
 
@@ -122,7 +112,7 @@ def diff_summary(old: str, new: str) -> str:
             changes.append(ln)
 
     if not changes:
-        return "（检测到变化，但未能提取到可读差异：可能是页面结构/广告位变动。）"
+        return "（检测到变化，但未能提取到可读差异：可能是页面结构或广告位变动。）"
 
     if len(changes) > MAX_DIFF_LINES:
         changes = changes[:MAX_DIFF_LINES] + ["...（差异过多已截断）"]
@@ -130,11 +120,7 @@ def diff_summary(old: str, new: str) -> str:
     return "\n".join(changes)
 
 
-def create_github_issue(title: str, body: str) -> None:
-    """
-    使用 GitHub Actions 自带的 GITHUB_TOKEN 创建 Issue。
-    创建 Issue 会触发 GitHub 通知邮件（前提：你开启了邮件通知，且对该仓库的 Issue 有订阅/参与通知）。
-    """
+def create_github_issue(title, body):
     token = os.getenv("GITHUB_TOKEN")
     repo = os.getenv("GITHUB_REPOSITORY")
 
@@ -147,16 +133,17 @@ def create_github_issue(title: str, body: str) -> None:
         "Authorization": f"Bearer {token}",
         "Accept": "application/vnd.github+json",
     }
+
     payload = {"title": title, "body": body}
 
     r = requests.post(api_url, headers=headers, json=payload, timeout=REQUEST_TIMEOUT)
     if r.status_code >= 300:
         print("[ERROR] 创建 Issue 失败：", r.status_code, r.text)
     else:
-        print("[OK] 已创建 Issue（将触发 GitHub 通知邮件）")
+        print("[OK] 已创建 Issue（将触发 GitHub 邮件通知）")
 
 
-def main() -> None:
+def main():
     state = load_state()
     updates_found = []
 
@@ -192,7 +179,7 @@ def main() -> None:
 
     save_state(state)
 
-        if updates_found:
+    if updates_found:
         print("\n==================== 变化摘要 ====================")
 
         blocks = []
@@ -204,7 +191,9 @@ def main() -> None:
             print(summary)
 
         run_id = os.getenv("GITHUB_RUN_ID", "")
-        title = "📅 Release Calendar 更新检测到变化" + (f" (run {run_id})" if run_id else "")
+        title = "📅 Release Calendar 更新检测到变化"
+        if run_id:
+            title += f" (run {run_id})"
 
         create_github_issue(
             title=title,
