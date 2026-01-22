@@ -208,7 +208,7 @@ def main() -> None:
         run_id = os.getenv("GITHUB_RUN_ID", "")
         title = f"📅 Release Calendar 更新检测到变化" + (f" (run {run_id})" if run_id else "")
 
-        create_github_issue(title=title, body="\n\n".join(block blocks if False else blocks))
+create_github_issue(title=title, body="\n\n".join(blocks))
 
         print("\n提示：你收到邮件后，把变更页面链接发给我，我就能按 Cold Treasure 模板写成稿。")
     else:
