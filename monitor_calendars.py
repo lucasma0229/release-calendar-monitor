@@ -192,10 +192,9 @@ def main() -> None:
 
     save_state(state)
 
-    if updates_found:
+        if updates_found:
         print("\n==================== 变化摘要 ====================")
 
-        # 组装 Issue 正文（Markdown）
         blocks = []
         for name, url, summary in updates_found:
             blocks.append(f"### {name}\n{url}\n```diff\n{summary}\n```")
@@ -204,11 +203,13 @@ def main() -> None:
             print(url)
             print(summary)
 
-        # 用运行号/时间避免标题完全重复（更好检索）
         run_id = os.getenv("GITHUB_RUN_ID", "")
-        title = f"📅 Release Calendar 更新检测到变化" + (f" (run {run_id})" if run_id else "")
+        title = "📅 Release Calendar 更新检测到变化" + (f" (run {run_id})" if run_id else "")
 
-create_github_issue(title=title, body="\n\n".join(blocks))
+        create_github_issue(
+            title=title,
+            body="\n\n".join(blocks),
+        )
 
         print("\n提示：你收到邮件后，把变更页面链接发给我，我就能按 Cold Treasure 模板写成稿。")
     else:
