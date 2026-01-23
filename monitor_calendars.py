@@ -14,9 +14,10 @@ TZ_TAIPEI = timezone(timedelta(hours=8))
 
 # 你原本的站点列表可以继续用；如果你之前还有 selector/解析逻辑，也可以后续再加回去
 SITES = [
-    # 例子（按你真实监控的网址改）
-    # {"name": "SneakerNews", "url": "https://sneakernews.com/release-dates/"},
-    # {"name": "Sneaker Bar Detroit", "url": "https://sneakerbardetroit.com/sneaker-release-dates/"}
+    {"name": "SBD | Air Jordan Release Dates 2026", "url": "https://sneakerbardetroit.com/air-jordan-release-dates/"},
+    {"name": "SBD | Sneaker Release Dates 2026", "url": "https://sneakerbardetroit.com/sneaker-release-dates/"},
+    {"name": "SneakerNews | Jordan Release Date Calendar 2026", "url": "https://sneakernews.com/air-jordan-release-dates/"},
+    {"name": "SneakerNews | Sneaker Release Dates Calendar 2025", "url": "https://sneakernews.com/release-dates/"},
 ]
 
 # —— 噪音过滤：你可以不断加关键词来“降噪” ——
