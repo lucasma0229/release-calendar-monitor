@@ -1,9 +1,9 @@
 name: Release Calendar Monitor
 
-on:
-  schedule:
-    - cron: "*/30 * * * *"   # 每 30 分钟跑一次，你想改频率可再改
+"on":
   workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *"
 
 permissions:
   contents: write
