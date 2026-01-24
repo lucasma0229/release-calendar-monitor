@@ -1,9 +1,9 @@
 name: Release Calendar Monitor
 
-"on":
+on:
   workflow_dispatch:
   schedule:
-    - cron: "*/29 * * * *"
+    - cron: '7,37 * * * *'
 
 permissions:
   contents: write
