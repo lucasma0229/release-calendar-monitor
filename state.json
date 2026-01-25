@@ -1675,7 +1675,7 @@
       ]
     },
     "https://sneakernews.com/air-jordan-release-dates/": {
-      "hash": "9858b66094467ab483aeca98adbfb365bf6131edbac6f430d423fd905d8fadac",
+      "hash": "61835fc7b4d061a00e9826f1378d351c844eb76a62445819886caf642a1dd253",
       "lines": [
         "Jordan Release Date Calendar for 2026",
         "Skip to main content",
@@ -1715,21 +1715,6 @@
         "JORDAN RELEASE DATES 2021",
         "JORDAN RELEASE DATES 2020",
         "January 2026",
-        "January 23, 2026",
-        "Air Jordan 1 Low Method Of Make v3",
-        "0",
-        "January 23",
-        "Retail Price: $140",
-        "Size Run:",
-        "Womens",
-        "Color:",
-        "Particle Rose/Barely Rose/Metallic Silver/Enigma Stone",
-        "Style Code:",
-        "HQ2186-601",
-        "Region:",
-        "US",
-        "Nikestore US",
-        "10:00am EST",
         "January 24, 2026",
         "Air Jordan 9",
         "19",
@@ -1878,7 +1863,7 @@
         "10:00am EST",
         "January 2026",
         "Air Jordan 1 Low",
-        "7",
+        "8",
         "January",
         "Retail Price: $175",
         "Size Run:",
@@ -1948,6 +1933,21 @@
         "Pale Ivory/Sierra Red/Tough Red",
         "Style Code:",
         "HV0823-108",
+        "Region:",
+        "US",
+        "Nike SNKRS US",
+        "10:00am EST",
+        "February 07, 2026",
+        "Air Jordan 4",
+        "9",
+        "February 07",
+        "Retail Price: $105",
+        "Size Run:",
+        "Little Kids",
+        "Color:",
+        "Pale Ivory/Sierra Red/Tough Red",
+        "Style Code:",
+        "HV4385-108",
         "Region:",
         "US",
         "Nike SNKRS US",
@@ -2255,6 +2255,11 @@
       ],
       "SneakerNews | Sneaker Release Dates Calendar 2025": [
         "ce50e4393a7d8269f93be31c9aedfbb144488b4f3c11890e6757127ff672a74e"
+      ]
+    },
+    "2026-01-25": {
+      "SneakerNews | Jordan Release Date Calendar 2026": [
+        "62d2396767221ed1a4a2bb5788493c84bfc86baa52dc3c90d051a14ed52a3539"
       ]
     }
   }
