@@ -1,7 +1,7 @@
 {
   "sites": {
     "https://sneakerbardetroit.com/air-jordan-release-dates/": {
-      "hash": "4201f95faf1ca0faecc772b15a234b056ffba65e97900128714e6577a098e8b0",
+      "hash": "895f45c01f04817c08d22a02ac8d9191c2ca5278ab449e68d2baeb0bbee0563d",
       "lines": [
         "Air Jordan Release Dates 2026",
         "News",
@@ -31,7 +31,7 @@
         "Recover your password",
         "your email",
         "A password will be e-mailed to you.",
-        "Sunday, January 25, 2026",
+        "Monday, January 26, 2026",
         "Sign in / Join",
         "SBD",
         "SBD",
@@ -739,7 +739,7 @@
       ]
     },
     "https://sneakerbardetroit.com/sneaker-release-dates/": {
-      "hash": "4cb9d806c867076d782a84e8f652a793180f88dca8977ab6401778b900fa2bd5",
+      "hash": "65b278bf9a93ca22a0544c70a308a0535a5347325a63746352a463459631f4ee",
       "lines": [
         "Sneaker Release Dates 2026",
         "News",
@@ -769,7 +769,7 @@
         "Recover your password",
         "your email",
         "A password will be e-mailed to you.",
-        "Sunday, January 25, 2026",
+        "Monday, January 26, 2026",
         "Sign in / Join",
         "SBD",
         "SBD",
@@ -1689,7 +1689,7 @@
       ]
     },
     "https://sneakernews.com/air-jordan-release-dates/": {
-      "hash": "82bd5b38ff5f8443e7796b5c7ed4cf89eeeb56d3db86a08182837f635d7775ca",
+      "hash": "1b1f3602dfbd04613f3e92029c093d1d786cd204ba89d4ba12a41eacbfbd13ad",
       "lines": [
         "Jordan Release Date Calendar for 2026",
         "Skip to main content",
@@ -1731,7 +1731,7 @@
         "January 2026",
         "January 26, 2026",
         "Air Jordan 17 High \"Doernbecher\"",
-        "18",
+        "19",
         "January 26",
         "Retail Price: $230",
         "Size Run:",
@@ -1939,7 +1939,7 @@
       ]
     },
     "https://sneakernews.com/release-dates/": {
-      "hash": "338a17e4b7f91e0a419909f4781f7427c3932b2b5da6f7f5a781e09fcb2c4b96",
+      "hash": "2152fdcf3a99d80d594cdef4b4fb407122d45036c0ec3a9277aaa594f2145339",
       "lines": [
         "Sneaker Release Dates Calendar for 2025",
         "Skip to main content",
@@ -1973,36 +1973,6 @@
         "@kicksfinder",
         "Jordan Release Dates Calendar for 2025.",
         "January 2026",
-        "January 24, 2026",
-        "Nike Shox R4",
-        "1",
-        "January 24",
-        "Retail Price: $170",
-        "Size Run:",
-        "Womens",
-        "Color:",
-        "Dark Pony/Soft Pearl/Pure Platinum/Blue Lightning",
-        "Style Code:",
-        "IM6690-220",
-        "Region:",
-        "US",
-        "Foot Locker",
-        "10:00am EST",
-        "January 24, 2026",
-        "Pharrell x adidas EVOLUTION Pro \"HUMANRACE\"",
-        "0",
-        "January 24",
-        "Retail Price: $1000",
-        "Size Run:",
-        "Mens",
-        "Color:",
-        "N/A",
-        "Style Code:",
-        "KJ1992",
-        "Region:",
-        "US",
-        "adidas US",
-        "10:00am EST",
         "January 26, 2026",
         "Nike Air Force 1 Low \"Doernbecher\"",
         "9",
@@ -2035,7 +2005,7 @@
         "10:00am EST",
         "January 26, 2026",
         "Nike Air Max Plus Low \"Doernbecher\"",
-        "8",
+        "9",
         "January 26",
         "Retail Price: $180",
         "Size Run:",
@@ -2153,6 +2123,38 @@
         "US",
         "Nike SNKRS US",
         "10:00am EST",
+        "January 27, 2026",
+        "Nike Air Superfly Moc",
+        "0",
+        "January 27",
+        "Retail Price: $105",
+        "Size Run:",
+        "Womens",
+        "Color:",
+        "N/A",
+        "Style Code:",
+        "HV8628-003",
+        "Region:",
+        "US",
+        "Nike SNKRS US",
+        "10:00am EST",
+        "January 27, 2026",
+        "adidas ZX 8000 \"JC & MT\"",
+        "2",
+        "January 27",
+        "Retail Price: $150",
+        "Size Run:",
+        "Mens",
+        "Color:",
+        "N/A",
+        "Style Code:",
+        "JQ4359",
+        "Region:",
+        "US, Europe",
+        "adidas US",
+        "10:00am EST",
+        "Overkill",
+        "06:00pm CEST / 12:00pm EST",
         "Loading...",
         "More Releases",
         "kicksfinder.com",
@@ -2227,10 +2229,17 @@
     },
     "2026-01-26": {
       "SBD | Sneaker Release Dates 2026": [
-        "a089f8313677ae68c0480429ab12439cde61bf793448474f856679d00d44b8cc"
+        "a089f8313677ae68c0480429ab12439cde61bf793448474f856679d00d44b8cc",
+        "639ec5ba7cc4747b1325bf7100a0996e11dc5042722002be435cb2fa00fbf727"
       ],
       "SneakerNews | Jordan Release Date Calendar 2026": [
         "86e706ef9a41afad54343a00d0d3956115dd18ef243dc97a73e13f720b8b5104"
+      ],
+      "SBD | Air Jordan Release Dates 2026": [
+        "90142b70b9528a2bee15bec55c54be3dfb65e3ddf4fed7bd9b453e817ac451f2"
+      ],
+      "SneakerNews | Sneaker Release Dates Calendar 2025": [
+        "830cb597e0463ca23faf42166d8710d4db413e3a8fda6b1492bc986439f9e454"
       ]
     }
   }
