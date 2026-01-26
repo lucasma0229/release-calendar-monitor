@@ -31,6 +31,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           ISSUE_NUMBER: "17"
+
+          # ✅ A/B 开关：0 = A（字段级，默认），1 = B（更敏感）
+          DETAIL_MODE: "0"
+
+          # ✅ Telegram（去 GitHub → Settings → Secrets and variables → Actions 添加）
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          
         run: python monitor_calendars.py
 
       - name: Commit state.json
