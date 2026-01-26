@@ -3039,6 +3039,28 @@
           "source_page": "https://sneakerbardetroit.com/sneaker-release-dates/"
         }
       },
+      "153548a867ca6af4": {
+        "hash": "e9156ef60222a5ae5799a37985602ee5b3fabc0a50e72906e75a98caa2c2f2fe",
+        "fields": {
+          "name": "Reebok Angel Reese 1 “Receipts Ready”",
+          "release_date": "February 6, 2026",
+          "price": "$130",
+          "sku": "100256997",
+          "url": "https://sneakerbardetroit.com/category/reebok/",
+          "source_page": "https://sneakerbardetroit.com/sneaker-release-dates/"
+        }
+      },
+      "3470725850f90440": {
+        "hash": "cee06ca77f11788d0cd0073c8902033ccf6158b36bafd77314ba60d5df74c3b4",
+        "fields": {
+          "name": "Color: White/Black-Energy Red",
+          "release_date": "February 6, 2026",
+          "price": "$130",
+          "sku": "100256997",
+          "url": "",
+          "source_page": "https://sneakerbardetroit.com/sneaker-release-dates/"
+        }
+      },
       "d8724269e582ecb0": {
         "hash": "662062794ec126eb1af2c3b967c99e827ba6ccaaef0f0bb2330f1a6f321c14dd",
         "fields": {
@@ -5386,14 +5408,14 @@
           "source_page": "https://sneakernews.com/release-dates/"
         }
       },
-      "1b6e537e1dc68d1c": {
-        "hash": "76e1b2a1234329cb869f31530127a613564e1d0c5aac3f7a869f13889361a033",
+      "28f39a0cc4a7ceaf": {
+        "hash": "dace0199292aac647196c67e98f83d97c10163728de8c2fe27000096528ebfc1",
         "fields": {
-          "name": "Nike Air Force 1 Low \"Doernbecher\"",
+          "name": "Nike Air Force 1 Low",
           "release_date": "",
           "price": "$120",
           "sku": "",
-          "url": "https://sneakernews.com/2025/12/03/nike-air-force-1-doernbecher-oli-fason-lancaster-io7688-921/",
+          "url": "https://sneakernews.com/2026/01/02/kobe-bryant-nike-air-force-1-low-cool-grey-ib0018-004/",
           "source_page": "https://sneakernews.com/release-dates/"
         }
       },
@@ -5408,10 +5430,10 @@
           "source_page": "https://sneakernews.com/release-dates/"
         }
       },
-      "7f7d5788e665af6d": {
-        "hash": "307d1787a41da7c325c8dfa6a0f269624823a79e22bfed46acf8fb13729668b7",
+      "3298daed09b047b3": {
+        "hash": "aac3a4e99d3fe3358a56fee247a8161b001f1e0b0f10ef2614b6210be5efd1ce",
         "fields": {
-          "name": "Size Run:",
+          "name": "Cool Grey/Wolf Grey",
           "release_date": "January 26, 2026",
           "price": "",
           "sku": "",
@@ -5419,12 +5441,78 @@
           "source_page": "https://sneakernews.com/release-dates/"
         }
       },
+      "90a5a5a3ca2ffc10": {
+        "hash": "94dd52a725c3d8cd47330bc00a8eb441b27d9142781dd296e97433ddfdf16fef",
+        "fields": {
+          "name": "Nikestore US",
+          "release_date": "January 26, 2026",
+          "price": "$120",
+          "sku": "",
+          "url": "https://bit.ly/4adukBr",
+          "source_page": "https://sneakernews.com/release-dates/"
+        }
+      },
       "d998267f264fca8e": {
-        "hash": "b8860c415ac7f958f90857c150dada25babcdaf7902594d8c4fac407bf3c8fe9",
+        "hash": "4441e3a41697ec564783340cdb1306e527c0492b52934d719a5c1b5f762bffad",
         "fields": {
           "name": "10:00am EST",
           "release_date": "January 26, 2026",
-          "price": "$210",
+          "price": "$120",
+          "sku": "",
+          "url": "",
+          "source_page": "https://sneakernews.com/release-dates/"
+        }
+      },
+      "4d31efc1d19a73f6": {
+        "hash": "967a328f8aab516e335b971f5af51996c06a157fd7eef75ac7d103e4bb71989a",
+        "fields": {
+          "name": "Foot Locker",
+          "release_date": "January 26, 2026",
+          "price": "$120",
+          "sku": "",
+          "url": "https://footlocker.8s4u9r.net/vP2OY3",
+          "source_page": "https://sneakernews.com/release-dates/"
+        }
+      },
+      "140627e1f4181066": {
+        "hash": "9621260ab7fa6cbb8362920b2bf51198260c72d93815e04a9c208da193bae1b0",
+        "fields": {
+          "name": "Coming Soon",
+          "release_date": "January 26, 2026",
+          "price": "$120",
+          "sku": "",
+          "url": "",
+          "source_page": "https://sneakernews.com/release-dates/"
+        }
+      },
+      "e147f66b7213dc34": {
+        "hash": "9cafc3a67362bda2ad1e5cd05010d39a0f75caca1198fdd2a8317c2342d64cba",
+        "fields": {
+          "name": "Undefeated",
+          "release_date": "January 26, 2026",
+          "price": "$120",
+          "sku": "",
+          "url": "https://undefeated.com/products/nike-x-kobe-bryant-air-force-1-low-coolgrey-wolfgrey?variant=39751404683525",
+          "source_page": "https://sneakernews.com/release-dates/"
+        }
+      },
+      "1b6e537e1dc68d1c": {
+        "hash": "76e1b2a1234329cb869f31530127a613564e1d0c5aac3f7a869f13889361a033",
+        "fields": {
+          "name": "Nike Air Force 1 Low \"Doernbecher\"",
+          "release_date": "",
+          "price": "$120",
+          "sku": "",
+          "url": "https://sneakernews.com/2025/12/03/nike-air-force-1-doernbecher-oli-fason-lancaster-io7688-921/",
+          "source_page": "https://sneakernews.com/release-dates/"
+        }
+      },
+      "7f7d5788e665af6d": {
+        "hash": "307d1787a41da7c325c8dfa6a0f269624823a79e22bfed46acf8fb13729668b7",
+        "fields": {
+          "name": "Size Run:",
+          "release_date": "January 26, 2026",
+          "price": "",
           "sku": "",
           "url": "",
           "source_page": "https://sneakernews.com/release-dates/"
@@ -5449,6 +5537,28 @@
           "price": "$180",
           "sku": "",
           "url": "https://sneakernews.com/2025/11/24/nike-air-max-plus-doernbecher-io7690-921",
+          "source_page": "https://sneakernews.com/release-dates/"
+        }
+      },
+      "b52f60614419e5d1": {
+        "hash": "2730b16d2f3bd3e7f458fdd597cc7f1e6bd663bba1c2843bce762631eeebc828",
+        "fields": {
+          "name": "Nike Pegasus Premium",
+          "release_date": "",
+          "price": "$220",
+          "sku": "",
+          "url": "https://sneakernews.com/2026/01/07/nike-pegasus-premium-zebra-print-iq0368-010",
+          "source_page": "https://sneakernews.com/release-dates/"
+        }
+      },
+      "8b3a30e628919d94": {
+        "hash": "32362135b92cf487a8e7cc512cf9a17cb332793db77249588500d94a243eaa96",
+        "fields": {
+          "name": "Hydrangeas/White/Bright Crimson/Black",
+          "release_date": "January 26, 2026",
+          "price": "$130",
+          "sku": "",
+          "url": "",
           "source_page": "https://sneakernews.com/release-dates/"
         }
       },
@@ -5496,17 +5606,6 @@
           "source_page": "https://sneakernews.com/release-dates/"
         }
       },
-      "63b03b9d3ecff655": {
-        "hash": "bf7cea908ade1be4f69f49bfd0609f2bf59fbb3f97fb16656f62412c032c56ce",
-        "fields": {
-          "name": "Nikestore US",
-          "release_date": "January 26, 2026",
-          "price": "$150",
-          "sku": "",
-          "url": "https://bit.ly/45RkK4J",
-          "source_page": "https://sneakernews.com/release-dates/"
-        }
-      },
       "ebdb91e9b3145a8e": {
         "hash": "df0ffa734967fed7c5680c55e91baa98254370e361c09b73a1dbad94da4ece9d",
         "fields": {
@@ -5537,105 +5636,6 @@
           "price": "$120",
           "sku": "",
           "url": "javascript:void(0)",
-          "source_page": "https://sneakernews.com/release-dates/"
-        }
-      },
-      "d8ab7bbf8d150468": {
-        "hash": "5f4c644e1de85d3ef1c6132306f10bbc4611d55ce44fdcd644b9f9984db7aa98",
-        "fields": {
-          "name": "Metal Green / Black",
-          "release_date": "January 27, 2026",
-          "price": "$140",
-          "sku": "",
-          "url": "",
-          "source_page": "https://sneakernews.com/release-dates/"
-        }
-      },
-      "78d532476c41a0c6": {
-        "hash": "3ee556a7fb920e43e0ff0ec12fcc608b921259043c007baaa80a5830b0350b37",
-        "fields": {
-          "name": "100245967",
-          "release_date": "January 27, 2026",
-          "price": "$140",
-          "sku": "",
-          "url": "",
-          "source_page": "https://sneakernews.com/release-dates/"
-        }
-      },
-      "70e7fd4fa85e43aa": {
-        "hash": "0ff34d38150c60efae9d30c4f18dfbbc25d15879ecdf3f8e4dca77294f233bcd",
-        "fields": {
-          "name": "Reebok US",
-          "release_date": "January 27, 2026",
-          "price": "$140",
-          "sku": "",
-          "url": "https://click.linksynergy.com/deeplink?id=F1JIlPaWZOU&mid=53567&murl=https%3A%2F%2Fwww.reebok.com%2Fproducts%2Freebok-engine-a-shoes-metal-green-metal-green-black-147647",
-          "source_page": "https://sneakernews.com/release-dates/"
-        }
-      },
-      "ab68800413fc4985": {
-        "hash": "1682fd52ba5719e20033231cb9d0dcb370c8711c7df93cad3f755c17831656be",
-        "fields": {
-          "name": "Bronx Girls Skate x Nike SB Dunk",
-          "release_date": "",
-          "price": "$140",
-          "sku": "",
-          "url": "https://sneakernews.com/2026/01/14/bronx-girls-skate-nike-sb-dunk-low/",
-          "source_page": "https://sneakernews.com/release-dates/"
-        }
-      },
-      "d95f4c6fade2516c": {
-        "hash": "c5739a18110ae0f2f6cd8cb1ab1215df089ba078e7997a710793cc22379d3a35",
-        "fields": {
-          "name": "January 27",
-          "release_date": "",
-          "price": "$140",
-          "sku": "",
-          "url": "",
-          "source_page": "https://sneakernews.com/release-dates/"
-        }
-      },
-      "7e7b9492d119faa2": {
-        "hash": "d1e31925ed3a575e18454f6b30c3777c04f016668d5bc636136b06d32953abc4",
-        "fields": {
-          "name": "Black/White/Challenge Red/Total Orange/Lucky Green/Smoke Grey",
-          "release_date": "January 27, 2026",
-          "price": "$105",
-          "sku": "",
-          "url": "",
-          "source_page": "https://sneakernews.com/release-dates/"
-        }
-      },
-      "d85a00e2a51d6da8": {
-        "hash": "86101a6684ffb569009ea7232053e0354ca11676b6ac23ec738ee56776f28035",
-        "fields": {
-          "name": "Nike SNKRS US",
-          "release_date": "January 27, 2026",
-          "price": "$105",
-          "sku": "",
-          "url": "https://bit.ly/2M7tavz",
-          "source_page": "https://sneakernews.com/release-dates/"
-        }
-      },
-      "39582fdec08ffd45": {
-        "hash": "9803e84231531c2abc077d5a3f926cd576b94ebccb9812e487ce46af63258b20",
-        "fields": {
-          "name": "Nike Air Superfly Moc",
-          "release_date": "",
-          "price": "$105",
-          "sku": "",
-          "url": "https://sneakernews.com/2026/01/05/nike-air-superfly-moc/",
-          "source_page": "https://sneakernews.com/release-dates/"
-        }
-      },
-      "1a369c1746639339": {
-        "hash": "ba926b4454e36d505b9ab851f03be0e2c9dfb35520e52a8ead0cd85e91339a7a",
-        "fields": {
-          "name": "adidas ZX 8000 \"JC & MT\"",
-          "release_date": "",
-          "price": "$150",
-          "sku": "",
-          "url": "https://sneakernews.com/2026/01/12/adidas-consortium-zx-8000-jc-mt-pack/",
           "source_page": "https://sneakernews.com/release-dates/"
         }
       }
@@ -6215,7 +6215,10 @@
     },
     "2026-01-27": {
       "SBD | Air Jordan Release Dates 2026": [],
-      "SBD | Sneaker Release Dates 2026": [],
+      "SBD | Sneaker Release Dates 2026": [
+        "acb79935dd441897d7b9a76d0f813c129bc7e7afd994e9ed50de17de6674f0b5",
+        "c2ea7686f61518aa1577e6a5f0268f676d777e391149fc665995a4abd0a94f4e"
+      ],
       "SneakerNews | Jordan Release Date Calendar 2026": [
         "eee19d51255d553cfe3763619047d73b32ba7c4723446d1a6e55d568fc0a34bc",
         "927dff3681995375542c40915aa637ca67d9feddcb03729e8c658602501a8ec7",
