@@ -4890,75 +4890,163 @@
         }
       },
       "4ff4c1f5e104c51c": {
-        "hash": "b4f7baf0f1e1bcba6d99bdf7cda68a224e7123053cc9e96ef1d7ae70a22f26f5",
+        "hash": "9a54afd9e2e11e99c66c38e3eb8dd0321cdeae51f143a39e821f0bd6603e0758",
         "fields": {
           "name": "Archive Links:",
           "release_date": "January 26, 2026",
-          "price": "$230",
+          "price": "$145",
           "sku": "",
           "url": "",
           "source_page": "https://sneakernews.com/air-jordan-release-dates/"
         }
       },
       "7fccd0b4ce08439d": {
-        "hash": "a422ae8a49c35e9d1baf5215d7f6d1400a90d139f9302a14c1c45dd854d5eae9",
+        "hash": "d1ca9c10e25ce5d0ddaa3b95e589486621cb8287b302d25569af7daa7f107ca8",
         "fields": {
           "name": "JORDAN RELEASE DATES 2024",
           "release_date": "January 26, 2026",
-          "price": "$230",
+          "price": "$145",
           "sku": "",
           "url": "https://sneakernews.com/air-jordan-release-dates-2024/",
           "source_page": "https://sneakernews.com/air-jordan-release-dates/"
         }
       },
       "b8787f2e03fe8b33": {
-        "hash": "04ee188ef3a9e7627c5bba7206765655331068cf7f255d2f124693a5d925edc0",
+        "hash": "bc0aee4c4d2b86953f764687aa400c21245557396f57285ca7f98bf1848a41e2",
         "fields": {
           "name": "JORDAN RELEASE DATES 2023",
           "release_date": "January 26, 2026",
-          "price": "$230",
+          "price": "$145",
           "sku": "",
           "url": "https://sneakernews.com/air-jordan-release-dates-2023/",
           "source_page": "https://sneakernews.com/air-jordan-release-dates/"
         }
       },
       "0727b324ee94ec64": {
-        "hash": "30d2480f97a717f167372a1798f4224a5367dce70d7a30ac38c69d65ce3c8c14",
+        "hash": "bef864774fa0f10742f7afa157c732e762da8e2c295ce25716f9f63550b01aee",
         "fields": {
           "name": "JORDAN RELEASE DATES 2022",
           "release_date": "January 26, 2026",
-          "price": "$230",
+          "price": "$145",
           "sku": "",
           "url": "https://sneakernews.com/air-jordan-release-dates-2022/",
           "source_page": "https://sneakernews.com/air-jordan-release-dates/"
         }
       },
       "bec47ede23cb6ec1": {
-        "hash": "1064873bc756bbe1051e81185772e0f5fc0f2004ef645584587ee62525ea3b21",
+        "hash": "5c7fff1809c73a45e8086ba979ed566bad62dc9cfa9ffa17afbb7596d5447fa9",
         "fields": {
           "name": "JORDAN RELEASE DATES 2021",
           "release_date": "January 26, 2026",
-          "price": "$230",
+          "price": "$145",
           "sku": "",
           "url": "https://sneakernews.com/air-jordan-release-dates-2021/",
           "source_page": "https://sneakernews.com/air-jordan-release-dates/"
         }
       },
       "75c9ad4d72fba847": {
-        "hash": "6f29b3ea813456f712cf4ad5b39adf112517331b0bb390d3de5b6b610c872a2d",
+        "hash": "801e0cc15bcb11bc243ca460c3edb3651d7fa543e8e7e79dbc8ee54fa973efb2",
         "fields": {
           "name": "JORDAN RELEASE DATES 2020",
           "release_date": "January 26, 2026",
-          "price": "$230",
+          "price": "$145",
           "sku": "",
           "url": "https://sneakernews.com/air-jordan-release-dates-2020/",
           "source_page": "https://sneakernews.com/air-jordan-release-dates/"
         }
       },
       "93b77b07925ea189": {
-        "hash": "e8266dfa915d4f54c9ac5f7b9e4732280dab3747376b15f88758daeb82890cd4",
+        "hash": "39636e0216fe37e3df040b2ce739440a07a4e72d110f1de370d1c8b663890d95",
         "fields": {
           "name": "January 2026",
+          "release_date": "January 26, 2026",
+          "price": "$145",
+          "sku": "",
+          "url": "",
+          "source_page": "https://sneakernews.com/air-jordan-release-dates/"
+        }
+      },
+      "719cbc6d6a5c779a": {
+        "hash": "32c697812878aa5edcc146c1ff470a18de576778815cef75bd02f06261cebd51",
+        "fields": {
+          "name": "Air Jordan 1 Low",
+          "release_date": "",
+          "price": "$145",
+          "sku": "",
+          "url": "https://sneakernews.com/2026/01/26/air-jordan-1-panda-baseball-cleats/",
+          "source_page": "https://sneakernews.com/air-jordan-release-dates/"
+        }
+      },
+      "1a5ef9e88d790a27": {
+        "hash": "f442d1869091356196eebbe8fc9f8b47707cc2e7b0b79d6e95df5025156bfb2c",
+        "fields": {
+          "name": "January 26",
+          "release_date": "",
+          "price": "$145",
+          "sku": "",
+          "url": "",
+          "source_page": "https://sneakernews.com/air-jordan-release-dates/"
+        }
+      },
+      "7f7d5788e665af6d": {
+        "hash": "6a0c7651f6d7b6e4ed19d475aa66cd257771db280af30e864850854804af47ca",
+        "fields": {
+          "name": "Size Run:",
+          "release_date": "January 26, 2026",
+          "price": "",
+          "sku": "",
+          "url": "",
+          "source_page": "https://sneakernews.com/air-jordan-release-dates/"
+        }
+      },
+      "8b2a26ce663e4c7b": {
+        "hash": "d60d5bf08eb9a149a2781d4c1e49a857aeaf6c134e9da93dcaef8a3a01a343a7",
+        "fields": {
+          "name": "Nikestore US",
+          "release_date": "January 26, 2026",
+          "price": "$155",
+          "sku": "",
+          "url": "https://bit.ly/4qB3oBu",
+          "source_page": "https://sneakernews.com/air-jordan-release-dates/"
+        }
+      },
+      "d998267f264fca8e": {
+        "hash": "d4805d183fd73ae8116ff9939b0eb77978acfc106ab7fccaa0fc1ca6f05aa627",
+        "fields": {
+          "name": "10:00am EST",
+          "release_date": "January 26, 2026",
+          "price": "$155",
+          "sku": "",
+          "url": "",
+          "source_page": "https://sneakernews.com/air-jordan-release-dates/"
+        }
+      },
+      "466ec89ffaf2cd54": {
+        "hash": "da99e26d0367b6eb10e429f1c7cdf29f32afa883c2bd68c15468d5919708b2a5",
+        "fields": {
+          "name": "Air Jordan 1 Mid",
+          "release_date": "",
+          "price": "$155",
+          "sku": "",
+          "url": "https://sneakernews.com/2026/01/26/air-jordan-1-panda-baseball-cleats/",
+          "source_page": "https://sneakernews.com/air-jordan-release-dates/"
+        }
+      },
+      "a61308fe3a934127": {
+        "hash": "acc8c47bf9f0a819bd2adc45cf2af908d10c3b6f952029387f4ca51d9ee2bb0b",
+        "fields": {
+          "name": "Air Jordan 1 Mid \"LA To Chicago\"",
+          "release_date": "",
+          "price": "$140",
+          "sku": "",
+          "url": "https://sneakernews.com/2025/12/18/air-jordan-1-mid-la-to-chicago-iq9383-611",
+          "source_page": "https://sneakernews.com/air-jordan-release-dates/"
+        }
+      },
+      "ae9189ce8ecb2b7b": {
+        "hash": "380104ffb7d55175c3f29986afb4d8ad922f07cd21058bc8ccd468755f147ae7",
+        "fields": {
+          "name": "True Red/White/Court Purple/Black",
           "release_date": "January 26, 2026",
           "price": "$230",
           "sku": "",
@@ -4974,39 +5062,6 @@
           "price": "$230",
           "sku": "",
           "url": "https://sneakernews.com/2026/01/16/air-jordan-17-doernbecher/",
-          "source_page": "https://sneakernews.com/air-jordan-release-dates/"
-        }
-      },
-      "1a5ef9e88d790a27": {
-        "hash": "57ff77724067306728eebe07bb3e2c786d377cd067674f0bac35525036579815",
-        "fields": {
-          "name": "January 26",
-          "release_date": "",
-          "price": "$230",
-          "sku": "",
-          "url": "",
-          "source_page": "https://sneakernews.com/air-jordan-release-dates/"
-        }
-      },
-      "7f7d5788e665af6d": {
-        "hash": "35b6b7586a4073a91f14962f90cd2f0f4463a4f9a09fefcdcb707c5e76d7a92c",
-        "fields": {
-          "name": "Size Run:",
-          "release_date": "January 31, 2026",
-          "price": "",
-          "sku": "",
-          "url": "",
-          "source_page": "https://sneakernews.com/air-jordan-release-dates/"
-        }
-      },
-      "d998267f264fca8e": {
-        "hash": "ec67a8eb20b2fce8ad25625ab4ca10f9b66c503ef36f0f13d6fd948a97d88f24",
-        "fields": {
-          "name": "10:00am EST",
-          "release_date": "January 31, 2026",
-          "price": "$145",
-          "sku": "",
-          "url": "",
           "source_page": "https://sneakernews.com/air-jordan-release-dates/"
         }
       },
@@ -5032,58 +5087,36 @@
           "source_page": "https://sneakernews.com/air-jordan-release-dates/"
         }
       },
-      "f782933905cd8fe1": {
-        "hash": "e8bcbb0bb98b821bbff489f1160b55ddab9415f28f54d52d5cdcac177b757a58",
+      "ec1f0b3944ed31ea": {
+        "hash": "b04a8795060244f5d86f3188cfaf44a806201ea807cd34d0e219d00927dd9c5f",
         "fields": {
-          "name": "Medium Olive/Black/Summit White/Sail",
+          "name": "JD Sports US",
           "release_date": "",
           "price": "$175",
           "sku": "",
-          "url": "",
+          "url": "https://bit.ly/4gN54mG",
           "source_page": "https://sneakernews.com/air-jordan-release-dates/"
         }
       },
-      "d85a00e2a51d6da8": {
-        "hash": "76717cd562c948276f346acce276dbfac1f82d06d4a3f9687d1fe11ee718981f",
+      "bf47537af95c4d34": {
+        "hash": "390747dd90fddf67b3d304a5a48d254e392a1d35b32e9b2b7d6c892e059db239",
         "fields": {
-          "name": "Nike SNKRS US",
+          "name": "Finish Line",
           "release_date": "",
           "price": "$175",
           "sku": "",
-          "url": "https://bit.ly/2M7tavz",
+          "url": "https://bit.ly/4fVS8tg",
           "source_page": "https://sneakernews.com/air-jordan-release-dates/"
         }
       },
-      "a8b6ca6dd7af840d": {
-        "hash": "78974ffb1b17deb2744c258985673f4c1f3508c92dc8858e0a0df2810b14406f",
+      "265609c6a29abdfc": {
+        "hash": "5b20f795410b226cfba6dae95fed63f2e526ea71855c6263aea8e8c4c86863d5",
         "fields": {
-          "name": "Air Jordan 1 Low",
+          "name": "Air Jordan 1 Golf Low",
           "release_date": "",
           "price": "$175",
           "sku": "",
           "url": "https://sneakernews.com/2025/12/31/air-jordan-1-low-golf-bred-iq3417-002",
-          "source_page": "https://sneakernews.com/air-jordan-release-dates/"
-        }
-      },
-      "4a48d99bd4b0ea34": {
-        "hash": "6c74ae4a2b535f48d567dfeb39b2762f2527431391e5394c191d597fdab2084f",
-        "fields": {
-          "name": "Black/White/Varsity Red",
-          "release_date": "",
-          "price": "$155",
-          "sku": "",
-          "url": "",
-          "source_page": "https://sneakernews.com/air-jordan-release-dates/"
-        }
-      },
-      "58b5848b83b538cc": {
-        "hash": "8b6c4fb34938fa639afb83e54f3550c9c0a5d1d3d3699b3cdf5107a49b1b7e7c",
-        "fields": {
-          "name": "Nikestore US",
-          "release_date": "",
-          "price": "$155",
-          "sku": "",
-          "url": "https://bit.ly/4qHhG3N",
           "source_page": "https://sneakernews.com/air-jordan-release-dates/"
         }
       },
@@ -5143,10 +5176,10 @@
         }
       },
       "6865941fba0ecd03": {
-        "hash": "e138aaf6109cd5051eafbb2a75db4a933bf8064cc7d94df96810e6f001966ea6",
+        "hash": "69d795e94f750ec85ec1d083dfba73fcbb3be330c9e564471a0b060971783d64",
         "fields": {
           "name": "Little Kids",
-          "release_date": "February 07, 2026",
+          "release_date": "February 01, 2026",
           "price": "",
           "sku": "",
           "url": "",
@@ -5154,11 +5187,44 @@
         }
       },
       "8cbd092ca05ecaf4": {
-        "hash": "21a354d308594b4b112a0ee66f7a2facc298e608a8456693e54b650320f60e03",
+        "hash": "92fb3ebbfbfe7d59a85a52d9ef6c876f8748e2946a18de5cb8a1379293435f72",
         "fields": {
           "name": "February 2026",
+          "release_date": "February 01, 2026",
+          "price": "$175",
+          "sku": "",
+          "url": "",
+          "source_page": "https://sneakernews.com/air-jordan-release-dates/"
+        }
+      },
+      "967e94b8a3545413": {
+        "hash": "85b3a9b7541caadb21eabaccfc3fac8adaf564d3c393f28ceb02b9fe7da00df0",
+        "fields": {
+          "name": "February 01",
+          "release_date": "",
+          "price": "$175",
+          "sku": "",
+          "url": "",
+          "source_page": "https://sneakernews.com/air-jordan-release-dates/"
+        }
+      },
+      "db68a180310d02ae": {
+        "hash": "0bcd8d6d0323e4102819c2bfa863a3b662a9b13a111fc41d075a154fd1966b56",
+        "fields": {
+          "name": "Jordan Spiz'ike Low Golf",
+          "release_date": "",
+          "price": "$195",
+          "sku": "",
+          "url": "https://sneakernews.com/2026/01/21/jordan-spizike-golf-white-classic-green-varsity-red-hq4365-100",
+          "source_page": "https://sneakernews.com/air-jordan-release-dates/"
+        }
+      },
+      "bf96875cf95c3481": {
+        "hash": "20f3101ffa6d06d2f38d87167c7a186705fc6427f83df4267c7d3714d2ed1abf",
+        "fields": {
+          "name": "White/Classic Green/Cool Grey/Varsity Red",
           "release_date": "February 07, 2026",
-          "price": "$220",
+          "price": "",
           "sku": "",
           "url": "",
           "source_page": "https://sneakernews.com/air-jordan-release-dates/"
@@ -5181,72 +5247,6 @@
           "name": "February 07",
           "release_date": "",
           "price": "$220",
-          "sku": "",
-          "url": "",
-          "source_page": "https://sneakernews.com/air-jordan-release-dates/"
-        }
-      },
-      "06b647246c50e1e7": {
-        "hash": "9fd60b154e4198527ece67b95734efb88535e17cce14cce2cd36cad60f51f26d",
-        "fields": {
-          "name": "Pale Ivory/Sierra Red/Tough Red",
-          "release_date": "February 07, 2026",
-          "price": "$105",
-          "sku": "",
-          "url": "",
-          "source_page": "https://sneakernews.com/air-jordan-release-dates/"
-        }
-      },
-      "3a81a5a4ebb492dd": {
-        "hash": "e13fbf2a20f65430f42c0a928fa71245549e88e638ec7a208dd4b2d080682f12",
-        "fields": {
-          "name": "Infant & Toddler",
-          "release_date": "February 12, 2026",
-          "price": "",
-          "sku": "",
-          "url": "",
-          "source_page": "https://sneakernews.com/air-jordan-release-dates/"
-        }
-      },
-      "854200aa190b3109": {
-        "hash": "4203ef9bedca888cac21f14861ba4a7dde79e77415a5f877fdeec7ef3c8f50ad",
-        "fields": {
-          "name": "Air Jordan 1 Retro High OG",
-          "release_date": "",
-          "price": "$185",
-          "sku": "",
-          "url": "https://sneakernews.com/2025/11/24/air-jordan-1-retro-high-og-cool-grey-all-star-dz5485-003",
-          "source_page": "https://sneakernews.com/air-jordan-release-dates/"
-        }
-      },
-      "0c44c3a4f33a0047": {
-        "hash": "0577d2efde65e011923580571d161bb34b4ced6af3fbf0ba5fe7b6c0a863fd50",
-        "fields": {
-          "name": "February 12",
-          "release_date": "",
-          "price": "$185",
-          "sku": "",
-          "url": "",
-          "source_page": "https://sneakernews.com/air-jordan-release-dates/"
-        }
-      },
-      "b7eb23e650eb39ce": {
-        "hash": "5caa04da37366d952c41229f3aa7d09aafdbd44ac045080e05b94ba4b2898b1a",
-        "fields": {
-          "name": "Cool Grey/Black/Sail/Game Royal/White",
-          "release_date": "February 12, 2026",
-          "price": "$140",
-          "sku": "",
-          "url": "",
-          "source_page": "https://sneakernews.com/air-jordan-release-dates/"
-        }
-      },
-      "f65c705a54505fd6": {
-        "hash": "1d075a554efc44f1551a48a55020bef349e007f68cd90e2a29444bef20f65f24",
-        "fields": {
-          "name": "Grade School",
-          "release_date": "February 12, 2026",
-          "price": "",
           "sku": "",
           "url": "",
           "source_page": "https://sneakernews.com/air-jordan-release-dates/"
@@ -5386,14 +5386,14 @@
           "source_page": "https://sneakernews.com/release-dates/"
         }
       },
-      "1b6e537e1dc68d1c": {
-        "hash": "76e1b2a1234329cb869f31530127a613564e1d0c5aac3f7a869f13889361a033",
+      "28f39a0cc4a7ceaf": {
+        "hash": "dace0199292aac647196c67e98f83d97c10163728de8c2fe27000096528ebfc1",
         "fields": {
-          "name": "Nike Air Force 1 Low \"Doernbecher\"",
+          "name": "Nike Air Force 1 Low",
           "release_date": "",
           "price": "$120",
           "sku": "",
-          "url": "https://sneakernews.com/2025/12/03/nike-air-force-1-doernbecher-oli-fason-lancaster-io7688-921/",
+          "url": "https://sneakernews.com/2026/01/02/kobe-bryant-nike-air-force-1-low-cool-grey-ib0018-004/",
           "source_page": "https://sneakernews.com/release-dates/"
         }
       },
@@ -5408,10 +5408,10 @@
           "source_page": "https://sneakernews.com/release-dates/"
         }
       },
-      "7f7d5788e665af6d": {
-        "hash": "307d1787a41da7c325c8dfa6a0f269624823a79e22bfed46acf8fb13729668b7",
+      "3298daed09b047b3": {
+        "hash": "aac3a4e99d3fe3358a56fee247a8161b001f1e0b0f10ef2614b6210be5efd1ce",
         "fields": {
-          "name": "Size Run:",
+          "name": "Cool Grey/Wolf Grey",
           "release_date": "January 26, 2026",
           "price": "",
           "sku": "",
@@ -5419,12 +5419,78 @@
           "source_page": "https://sneakernews.com/release-dates/"
         }
       },
+      "90a5a5a3ca2ffc10": {
+        "hash": "94dd52a725c3d8cd47330bc00a8eb441b27d9142781dd296e97433ddfdf16fef",
+        "fields": {
+          "name": "Nikestore US",
+          "release_date": "January 26, 2026",
+          "price": "$120",
+          "sku": "",
+          "url": "https://bit.ly/4adukBr",
+          "source_page": "https://sneakernews.com/release-dates/"
+        }
+      },
       "d998267f264fca8e": {
-        "hash": "b8860c415ac7f958f90857c150dada25babcdaf7902594d8c4fac407bf3c8fe9",
+        "hash": "4441e3a41697ec564783340cdb1306e527c0492b52934d719a5c1b5f762bffad",
         "fields": {
           "name": "10:00am EST",
           "release_date": "January 26, 2026",
-          "price": "$210",
+          "price": "$120",
+          "sku": "",
+          "url": "",
+          "source_page": "https://sneakernews.com/release-dates/"
+        }
+      },
+      "4d31efc1d19a73f6": {
+        "hash": "967a328f8aab516e335b971f5af51996c06a157fd7eef75ac7d103e4bb71989a",
+        "fields": {
+          "name": "Foot Locker",
+          "release_date": "January 26, 2026",
+          "price": "$120",
+          "sku": "",
+          "url": "https://footlocker.8s4u9r.net/vP2OY3",
+          "source_page": "https://sneakernews.com/release-dates/"
+        }
+      },
+      "140627e1f4181066": {
+        "hash": "9621260ab7fa6cbb8362920b2bf51198260c72d93815e04a9c208da193bae1b0",
+        "fields": {
+          "name": "Coming Soon",
+          "release_date": "January 26, 2026",
+          "price": "$120",
+          "sku": "",
+          "url": "",
+          "source_page": "https://sneakernews.com/release-dates/"
+        }
+      },
+      "e147f66b7213dc34": {
+        "hash": "9cafc3a67362bda2ad1e5cd05010d39a0f75caca1198fdd2a8317c2342d64cba",
+        "fields": {
+          "name": "Undefeated",
+          "release_date": "January 26, 2026",
+          "price": "$120",
+          "sku": "",
+          "url": "https://undefeated.com/products/nike-x-kobe-bryant-air-force-1-low-coolgrey-wolfgrey?variant=39751404683525",
+          "source_page": "https://sneakernews.com/release-dates/"
+        }
+      },
+      "1b6e537e1dc68d1c": {
+        "hash": "76e1b2a1234329cb869f31530127a613564e1d0c5aac3f7a869f13889361a033",
+        "fields": {
+          "name": "Nike Air Force 1 Low \"Doernbecher\"",
+          "release_date": "",
+          "price": "$120",
+          "sku": "",
+          "url": "https://sneakernews.com/2025/12/03/nike-air-force-1-doernbecher-oli-fason-lancaster-io7688-921/",
+          "source_page": "https://sneakernews.com/release-dates/"
+        }
+      },
+      "7f7d5788e665af6d": {
+        "hash": "307d1787a41da7c325c8dfa6a0f269624823a79e22bfed46acf8fb13729668b7",
+        "fields": {
+          "name": "Size Run:",
+          "release_date": "January 26, 2026",
+          "price": "",
           "sku": "",
           "url": "",
           "source_page": "https://sneakernews.com/release-dates/"
@@ -5449,6 +5515,17 @@
           "price": "$180",
           "sku": "",
           "url": "https://sneakernews.com/2025/11/24/nike-air-max-plus-doernbecher-io7690-921",
+          "source_page": "https://sneakernews.com/release-dates/"
+        }
+      },
+      "b52f60614419e5d1": {
+        "hash": "2730b16d2f3bd3e7f458fdd597cc7f1e6bd663bba1c2843bce762631eeebc828",
+        "fields": {
+          "name": "Nike Pegasus Premium",
+          "release_date": "",
+          "price": "$220",
+          "sku": "",
+          "url": "https://sneakernews.com/2026/01/07/nike-pegasus-premium-zebra-print-iq0368-010",
           "source_page": "https://sneakernews.com/release-dates/"
         }
       },
@@ -5507,17 +5584,6 @@
           "source_page": "https://sneakernews.com/release-dates/"
         }
       },
-      "63b03b9d3ecff655": {
-        "hash": "bf7cea908ade1be4f69f49bfd0609f2bf59fbb3f97fb16656f62412c032c56ce",
-        "fields": {
-          "name": "Nikestore US",
-          "release_date": "January 26, 2026",
-          "price": "$150",
-          "sku": "",
-          "url": "https://bit.ly/45RkK4J",
-          "source_page": "https://sneakernews.com/release-dates/"
-        }
-      },
       "ebdb91e9b3145a8e": {
         "hash": "df0ffa734967fed7c5680c55e91baa98254370e361c09b73a1dbad94da4ece9d",
         "fields": {
@@ -5548,94 +5614,6 @@
           "price": "$120",
           "sku": "",
           "url": "javascript:void(0)",
-          "source_page": "https://sneakernews.com/release-dates/"
-        }
-      },
-      "d8ab7bbf8d150468": {
-        "hash": "5f4c644e1de85d3ef1c6132306f10bbc4611d55ce44fdcd644b9f9984db7aa98",
-        "fields": {
-          "name": "Metal Green / Black",
-          "release_date": "January 27, 2026",
-          "price": "$140",
-          "sku": "",
-          "url": "",
-          "source_page": "https://sneakernews.com/release-dates/"
-        }
-      },
-      "78d532476c41a0c6": {
-        "hash": "3ee556a7fb920e43e0ff0ec12fcc608b921259043c007baaa80a5830b0350b37",
-        "fields": {
-          "name": "100245967",
-          "release_date": "January 27, 2026",
-          "price": "$140",
-          "sku": "",
-          "url": "",
-          "source_page": "https://sneakernews.com/release-dates/"
-        }
-      },
-      "70e7fd4fa85e43aa": {
-        "hash": "0ff34d38150c60efae9d30c4f18dfbbc25d15879ecdf3f8e4dca77294f233bcd",
-        "fields": {
-          "name": "Reebok US",
-          "release_date": "January 27, 2026",
-          "price": "$140",
-          "sku": "",
-          "url": "https://click.linksynergy.com/deeplink?id=F1JIlPaWZOU&mid=53567&murl=https%3A%2F%2Fwww.reebok.com%2Fproducts%2Freebok-engine-a-shoes-metal-green-metal-green-black-147647",
-          "source_page": "https://sneakernews.com/release-dates/"
-        }
-      },
-      "ab68800413fc4985": {
-        "hash": "1682fd52ba5719e20033231cb9d0dcb370c8711c7df93cad3f755c17831656be",
-        "fields": {
-          "name": "Bronx Girls Skate x Nike SB Dunk",
-          "release_date": "",
-          "price": "$140",
-          "sku": "",
-          "url": "https://sneakernews.com/2026/01/14/bronx-girls-skate-nike-sb-dunk-low/",
-          "source_page": "https://sneakernews.com/release-dates/"
-        }
-      },
-      "d95f4c6fade2516c": {
-        "hash": "c5739a18110ae0f2f6cd8cb1ab1215df089ba078e7997a710793cc22379d3a35",
-        "fields": {
-          "name": "January 27",
-          "release_date": "",
-          "price": "$140",
-          "sku": "",
-          "url": "",
-          "source_page": "https://sneakernews.com/release-dates/"
-        }
-      },
-      "7e7b9492d119faa2": {
-        "hash": "d1e31925ed3a575e18454f6b30c3777c04f016668d5bc636136b06d32953abc4",
-        "fields": {
-          "name": "Black/White/Challenge Red/Total Orange/Lucky Green/Smoke Grey",
-          "release_date": "January 27, 2026",
-          "price": "$105",
-          "sku": "",
-          "url": "",
-          "source_page": "https://sneakernews.com/release-dates/"
-        }
-      },
-      "e661b99d6d06f9c7": {
-        "hash": "c3a184309b5316d9f34c20e47f4a75699ca039a723eded0385a293a939408ac3",
-        "fields": {
-          "name": "Nike SNKRS US",
-          "release_date": "January 27, 2026",
-          "price": "$105",
-          "sku": "",
-          "url": "https://bit.ly/4jVOpiY",
-          "source_page": "https://sneakernews.com/release-dates/"
-        }
-      },
-      "39582fdec08ffd45": {
-        "hash": "9803e84231531c2abc077d5a3f926cd576b94ebccb9812e487ce46af63258b20",
-        "fields": {
-          "name": "Nike Air Superfly Moc",
-          "release_date": "",
-          "price": "$105",
-          "sku": "",
-          "url": "https://sneakernews.com/2026/01/05/nike-air-superfly-moc/",
           "source_page": "https://sneakernews.com/release-dates/"
         }
       }
@@ -6216,10 +6194,42 @@
     "2026-01-27": {
       "SBD | Air Jordan Release Dates 2026": [],
       "SBD | Sneaker Release Dates 2026": [],
-      "SneakerNews | Jordan Release Date Calendar 2026": [],
+      "SneakerNews | Jordan Release Date Calendar 2026": [
+        "eee19d51255d553cfe3763619047d73b32ba7c4723446d1a6e55d568fc0a34bc",
+        "927dff3681995375542c40915aa637ca67d9feddcb03729e8c658602501a8ec7",
+        "101c239905618383f307893b81316e21c12274d1ef2ff3caaa7ff42448b11612",
+        "06ea1c06b3b199a0a6568b1ed1ccac980e6f3eae571a1b171b510cf3dbef38a5",
+        "d787e435ac3e574416bf7679aed2c8816941c237a886ec23a66bf643ab4454cb",
+        "a94a8ec641c8fba236cff01dfda7e3d57e07f45a064e9d8b861b55429af9c9ae",
+        "ec8f3434abe866f7a6553fc2e667a4f74239028f55ec7d3419dcc049c3ebea63",
+        "1d303f47c25ac22554aeaff0acff842df1ee88a5f7006622e8e47998de84ec24",
+        "ac88d999009e206e78652c43274b70b7d8ae0d1012503c96aa721192e815f1e5",
+        "488008c27880b872146ba68a996e466de5fb65ff763f1befc217b7eec5ce2803",
+        "a8f6080c807b26b96112dc7caea77417d1eeb9554826ca3b41c423aeb2c9c21c",
+        "9630d0815a8e1116861d47d77769dfdc37d2f8373e0209204c1a511de779ce79",
+        "96eb34bc12878008c10d085e8a47857772280d4bf10c55aa98ff7037e2407387",
+        "2c1d970a4fdc1155a0fcb8a9c118c4aa7165d6ea23b5781886bacba6823bfd85",
+        "413c73f650ddae7412297baf8e529e6776818255eb0656a3d38d21b2dd5a495e",
+        "799d9aae70f3252a160e364728231b98afc258335d0445137c1606db060dc8b8",
+        "831933ad2e7f5cef8462c7741887b02f2a8c017d8259348d7dadd723418da136",
+        "9cc51cfc63c2f7e832b7d814fa39126d27c83413589ba4a0786ca59ff4f8fa6d",
+        "c1794cab0e50e450b7c8ac031d379c70bba38a6c390ac37d70aab99e54387490",
+        "cccbdbd55813eec7d466489f016cb9a4f19925f22cb21f108879a457de003eb1",
+        "f1b5c645f559b87647c52b9b71d268342913fd9643a8bc87645ddc61a8870f49",
+        "47f65b852575826666e4a47db9609a4437599487284679c5d3277ab271d4f487",
+        "fd0f28bef44b673cb130b19a47989d2c54f49e2543d08a3ec910d6c132ad7bdc"
+      ],
       "SneakerNews | Sneaker Release Dates Calendar": [
         "50dcb5571a5ad77f84942f7b2453ebaa9bc32f87bc6636af299fa6aa907fb8b6",
-        "3108cf8b5bd2853e7ce4b68bdebea797f0e67f44ae7f30661035d9d4b76731a2"
+        "3108cf8b5bd2853e7ce4b68bdebea797f0e67f44ae7f30661035d9d4b76731a2",
+        "0590b2be9c03af8231f84b5ff66b105a335f913dafbab56d3f2733d8f76b60e7",
+        "c385aeb51625f29a0d9995e89904ba4af0360e5b7e32ff480ddac04df7ce2f88",
+        "c4fea91f642ff94852f0603ad578e3e5ad67e6ea25e4a90e97f9b3fde9ba16c4",
+        "291ce91c4b599ff578f14bfb09149625a4ffd0aff56cd8858b2eda4942aca8e3",
+        "568bfda6d7bd9a01bffb256dde30ea6f35fdac4e82bf001ff1f4bb9afb2f9e7d",
+        "f34af40d19127ff8c0a0544f5b368cc203ad504273b5c1da07ab432a5439e82e",
+        "4174e3b8407b28291c0b7d6ed8e0556a972d090dd91b35e674280c3c77dc134c",
+        "989ad7315ad0f5a990d202d1017f2c64c43b1de006ca4a2d7286836a93b4839d"
       ]
     }
   }
