@@ -2,72 +2,46 @@ import os
 import re
 import json
 import hashlib
-import difflib
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
+from typing import Dict, List, Optional, Tuple
 
 import requests
 from bs4 import BeautifulSoup
 
+
 STATE_PATH = Path("state.json")
 TZ_TAIPEI = timezone(timedelta(hours=8))
 
-# 站点列表：先保持你现在的（后续做“鞋款级监控”会再升级）
+# 你要监控的页面（页面里通常包含很多鞋）
 SITES = [
     {"name": "SBD | Air Jordan Release Dates 2026", "url": "https://sneakerbardetroit.com/air-jordan-release-dates/"},
     {"name": "SBD | Sneaker Release Dates 2026", "url": "https://sneakerbardetroit.com/sneaker-release-dates/"},
     {"name": "SneakerNews | Jordan Release Date Calendar 2026", "url": "https://sneakernews.com/air-jordan-release-dates/"},
-    {"name": "SneakerNews | Sneaker Release Dates Calendar 2025", "url": "https://sneakernews.com/release-dates/"},
+    {"name": "SneakerNews | Sneaker Release Dates Calendar", "url": "https://sneakernews.com/release-dates/"},
 ]
 
-# —— 噪音过滤：你可以不断加关键词来“降噪” ——
+# 噪音过滤（可按需扩充）
 NOISE_KEYWORDS = [
     "advertisement", "sponsored", "cookie", "privacy", "subscribe",
     "twitter", "instagram", "facebook", "tiktok", "youtube", "pinterest",
     "sign up", "log in", "login", "newsletter", "share", "follow",
     "buy now", "shop now", "where to buy", "stockx", "goat", "ebay",
+    "comments", "related posts", "recommended",
     "评论", "隐私", "条款", "订阅", "关注", "分享", "登录", "注册", "广告",
 ]
 
-# —— 只关心的重要字段（2.0 版）——
-FIELD_PATTERNS = {
-    "release_date": re.compile(r"(release\s*date|发售日|发布日期|发售日期)\s*[:：]?\s*(.+)", re.I),
-    "price": re.compile(r"(retail\s*price|price|定价|售价)\s*[:：]?\s*(.+)", re.I),
-    "sku": re.compile(r"(style\s*code|sku|货号)\s*[:：]?\s*(.+)", re.I),
-}
-
-def is_probable_shoe_name(line: str) -> bool:
-    s = line.strip()
-    if len(s) < 8:
-        return False
-    if s.lower().startswith("http"):
-        return False
-    for pat in FIELD_PATTERNS.values():
-        if pat.search(s):
-            return False
-    if re.fullmatch(r"[\$¥€]?\s*\d+(\.\d+)?", s):
-        return False
-    if re.fullmatch(r"\d{4}[-/]\d{1,2}[-/]\d{1,2}", s):
-        return False
-    if any(k in s.lower() for k in NOISE_KEYWORDS):
-        return False
-    return True
-
-def brand_of(shoe_name: str) -> str:
-    s = shoe_name.lower()
-    if "air jordan" in s or s.startswith("jordan") or "jordan brand" in s:
-        return "Jordan"
-    if s.startswith("nike") or "kobe" in s or "lebron" in s or "air max" in s or "dunk" in s or "air force" in s:
-        return "Nike"
-    if s.startswith("new balance") or "nb " in s or "990" in s or "991" in s or "992" in s or "993" in s:
-        return "New Balance"
-    if s.startswith("adidas") or "yeezy" in s:
-        return "adidas"
-    if s.startswith("asics") or "gel-" in s:
-        return "ASICS"
-    if s.startswith("puma"):
-        return "Puma"
-    return "Other"
+# 字段识别（A 模式）
+PRICE_RE = re.compile(r"(\$|USD\s*)\s?(\d{2,4})(?:\.\d{2})?", re.I)
+SKU_RE = re.compile(r"(style\s*code|sku)\s*[:：]?\s*([A-Z0-9\-]{6,})", re.I)
+DATE_RE = re.compile(
+    r"("
+    r"(jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\s+\d{1,2}(?:st|nd|rd|th)?[,]?\s+\d{4}"
+    r"|"
+    r"\d{4}[-/]\d{1,2}[-/]\d{1,2}"
+    r")",
+    re.I,
+)
 
 def now_taipei() -> str:
     return datetime.now(TZ_TAIPEI).strftime("%Y-%m-%d %H:%M")
@@ -75,190 +49,233 @@ def now_taipei() -> str:
 def today_taipei() -> str:
     return datetime.now(TZ_TAIPEI).strftime("%Y-%m-%d")
 
+def norm_space(s: str) -> str:
+    return " ".join((s or "").strip().split())
+
+def looks_noisy(s: str) -> bool:
+    low = (s or "").lower()
+    return any(k in low for k in NOISE_KEYWORDS)
+
+def safe_get(d: dict, *keys, default=None):
+    cur = d
+    for k in keys:
+        if not isinstance(cur, dict) or k not in cur:
+            return default
+        cur = cur[k]
+    return cur
+
 def load_state() -> dict:
     if STATE_PATH.exists():
         try:
             return json.loads(STATE_PATH.read_text(encoding="utf-8"))
         except Exception:
             pass
-    return {"sites": {}, "notified": {}}  # notified[date][source] = list(event_id)
+    # v3：sites -> 每个页面；shoes -> 每个页面下每双鞋；notified -> 去重
+    return {"sites": {}, "shoes": {}, "notified": {}}
 
 def save_state(state: dict) -> None:
     STATE_PATH.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
 
 def fetch_html(url: str) -> str:
-    r = requests.get(url, timeout=30, headers={"User-Agent": "ReleaseMonitor/2.0"})
+    r = requests.get(url, timeout=30, headers={"User-Agent": "ReleaseMonitor/3.0"})
     r.raise_for_status()
     return r.text
 
-def html_to_lines(html: str) -> list[str]:
+def soup_from_html(html: str) -> BeautifulSoup:
     soup = BeautifulSoup(html, "html.parser")
     for tag in soup(["script", "style", "noscript"]):
         tag.decompose()
-    text = soup.get_text("\n")
+    return soup
 
+def text_lines_from_soup(soup: BeautifulSoup) -> List[str]:
+    text = soup.get_text("\n")
     lines = []
     for raw in text.splitlines():
-        s = " ".join(raw.strip().split())
+        s = norm_space(raw)
         if not s:
             continue
-        low = s.lower()
-        if any(k in low for k in NOISE_KEYWORDS):
+        if looks_noisy(s):
             continue
-        if len(s) > 180:
+        if len(s) > 200:
             continue
         lines.append(s)
     return lines
 
-def fingerprint(lines: list[str]) -> str:
-    joined = "\n".join(lines).encode("utf-8", errors="ignore")
-    return hashlib.sha256(joined).hexdigest()
+def stable_shoe_id(name: str, url: str) -> str:
+    base = f"{norm_space(name).lower()}::{(url or '').strip()}"
+    return hashlib.sha256(base.encode("utf-8")).hexdigest()[:16]
 
-def unified_diff(old_lines: list[str], new_lines: list[str]) -> str:
-    diff = difflib.unified_diff(
-        old_lines, new_lines,
-        fromfile="before", tofile="after",
-        lineterm="",
-        n=2
-    )
-    return "\n".join(diff)
+def hash_fields(fields: dict) -> str:
+    payload = json.dumps(fields, ensure_ascii=False, sort_keys=True)
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
-def parse_diff_to_events(diff_text: str, old_lines: list[str], new_lines: list[str]) -> dict:
-    old_shoes = {l for l in old_lines if is_probable_shoe_name(l)}
-    new_shoes = {l for l in new_lines if is_probable_shoe_name(l)}
-
-    added_shoes = sorted(list(new_shoes - old_shoes))
-    removed_shoes = sorted(list(old_shoes - new_shoes))
-
-    buckets = {}
-
-    def ensure_brand(b: str):
-        if b not in buckets:
-            buckets[b] = {
-                "new_shoes": [],
-                "removed_shoes": [],
-                "release_date_changes": [],
-                "price_changes": [],
-                "other_notes": [],
-            }
-
-    for shoe in added_shoes:
-        b = brand_of(shoe)
-        ensure_brand(b)
-        buckets[b]["new_shoes"].append(shoe)
-
-    for shoe in removed_shoes:
-        b = brand_of(shoe)
-        ensure_brand(b)
-        buckets[b]["removed_shoes"].append(shoe)
-
-    last_shoe = None
-    removed_fields = {}
-    added_fields = {}
-
-    for raw in diff_text.splitlines():
-        if raw.startswith(("---", "+++", "@@")):
-            continue
-        if not raw:
-            continue
-
-        prefix = raw[0]
-        content = raw[1:].strip() if prefix in (" ", "+", "-") else raw.strip()
-
-        if is_probable_shoe_name(content):
-            last_shoe = content
-
-        if prefix not in ("+", "-"):
-            continue
-        if not last_shoe:
-            continue
-
-        for field, pat in FIELD_PATTERNS.items():
-            m = pat.search(content)
-            if not m:
-                continue
-            value = m.group(2).strip()
-            if prefix == "-":
-                removed_fields.setdefault(last_shoe, {})[field] = value
-            else:
-                added_fields.setdefault(last_shoe, {})[field] = value
-
-    shoes_union = set(removed_fields.keys()) | set(added_fields.keys())
-    for shoe in shoes_union:
-        b = brand_of(shoe)
-        ensure_brand(b)
-        old_f = removed_fields.get(shoe, {})
-        new_f = added_fields.get(shoe, {})
-
-        if "release_date" in old_f and "release_date" in new_f and old_f["release_date"] != new_f["release_date"]:
-            buckets[b]["release_date_changes"].append((shoe, old_f["release_date"], new_f["release_date"]))
-
-        if "price" in old_f and "price" in new_f and old_f["price"] != new_f["price"]:
-            buckets[b]["price_changes"].append((shoe, old_f["price"], new_f["price"]))
-
-    return buckets
-
-def build_fixed_issue_comment(source_name: str, url: str, buckets: dict, diff_text: str) -> str:
+def extract_candidate_shoes(
+    site_url: str,
+    soup: BeautifulSoup,
+    detail_mode: bool,
+) -> List[dict]:
     """
-    固定 Issue 评论内容：
-    - 不再创建 daily issue
-    - 只要有“重要变化”，就往固定 Issue 追加 comment
+    以“稳”为第一原则的通用提取器：
+    - 先把页面转成 text lines
+    - 用窗口法寻找：像鞋名的一行 + 附近出现日期/价格/sku
+    - url 尽量从页面内 <a> 的链接里找（同域/相对链接会拼接）
+    这是“通用启发式”，不绑定单站点结构；后续我们可按站点定制提高准确度。
     """
-    lines = []
-    lines.append(f"## 🔔 Update Detected @ {now_taipei()}")
-    lines.append(f"- **来源**：{source_name}")
-    lines.append(f"- **链接**：{url}")
-    lines.append("")
+    lines = text_lines_from_soup(soup)
 
-    brand_order = ["Nike", "Jordan", "New Balance", "adidas", "ASICS", "Puma", "Other"]
-    brands = [b for b in brand_order if b in buckets] + [b for b in buckets.keys() if b not in brand_order]
+    # 收集页面内所有链接文本映射（用来给鞋名找 URL）
+    link_map: List[Tuple[str, str]] = []
+    for a in soup.select("a[href]"):
+        href = (a.get("href") or "").strip()
+        txt = norm_space(a.get_text(" "))
+        if not href or not txt:
+            continue
+        if looks_noisy(txt):
+            continue
+        # 过滤明显非内容链接
+        if txt.lower() in ("home", "next", "prev", "previous", "about", "contact"):
+            continue
+        link_map.append((txt, href))
 
-    for brand in brands:
-        block = buckets[brand]
-        important_exists = bool(block["new_shoes"] or block["release_date_changes"] or block["price_changes"])
-        if not important_exists:
+    def resolve_url(href: str) -> str:
+        if href.startswith("http://") or href.startswith("https://"):
+            return href
+        # 相对路径拼接（简单处理）
+        if href.startswith("/"):
+            m = re.match(r"^(https?://[^/]+)", site_url)
+            if m:
+                return m.group(1) + href
+        return href
+
+    def best_url_for_name(name: str) -> str:
+        # 先做严格匹配：链接文本包含鞋名（或鞋名包含链接文本）
+        n = norm_space(name)
+        n_low = n.lower()
+        best = ""
+        best_score = 0
+        for txt, href in link_map:
+            t = txt.strip()
+            t_low = t.lower()
+            # 评分：重合度高优先
+            score = 0
+            if t_low == n_low:
+                score = 100
+            elif t_low in n_low or n_low in t_low:
+                score = 60
+            elif len(set(t_low.split()) & set(n_low.split())) >= 2:
+                score = 30
+            if score > best_score:
+                best_score = score
+                best = resolve_url(href)
+        return best
+
+    def is_probable_name(s: str) -> bool:
+        s = norm_space(s)
+        if len(s) < 8:
+            return False
+        if looks_noisy(s):
+            return False
+        if s.lower().startswith("http"):
+            return False
+        # 排除纯字段行
+        if SKU_RE.search(s) or PRICE_RE.search(s) or DATE_RE.search(s):
+            # 纯字段行通常不当作鞋名，但如果同时又包含多个单词也可能是鞋名里带价格/日期，这里保守排除
+            return False
+        # 排除很像按钮/栏目
+        bad_starts = ("release date", "retail price", "style code", "sku", "updated", "update")
+        if any(s.lower().startswith(b) for b in bad_starts):
+            return False
+        # 排除过短、全大写栏目
+        if len(s) <= 10 and s.isupper():
+            return False
+        return True
+
+    shoes: List[dict] = []
+    seen_ids = set()
+
+    # 窗口扫描：遇到可能鞋名 -> 在后续 N 行内找日期/价格/sku
+    WINDOW = 12
+    for i, line in enumerate(lines):
+        if not is_probable_name(line):
             continue
 
-        lines.append(f"### 🧩 {brand}")
+        name = line
+        release_date = ""
+        price = ""
+        sku = ""
 
-        if block["new_shoes"]:
-            lines.append("**✅ 新增鞋款**")
-            for shoe in block["new_shoes"][:20]:
-                lines.append(f"- {shoe}")
+        snippet_lines: List[str] = []
+        for j in range(i, min(i + WINDOW, len(lines))):
+            s = lines[j]
+            snippet_lines.append(s)
 
-        if block["release_date_changes"]:
-            lines.append("")
-            lines.append("**📅 发售日期变动**")
-            for shoe, oldv, newv in block["release_date_changes"][:30]:
-                lines.append(f"- {shoe} · **{oldv} → {newv}**")
+            if not release_date:
+                m = DATE_RE.search(s)
+                if m:
+                    release_date = norm_space(m.group(0))
+            if not price:
+                m = PRICE_RE.search(s)
+                if m:
+                    price = f"${m.group(2)}"
+            if not sku:
+                m = SKU_RE.search(s)
+                if m:
+                    sku = m.group(2).strip()
 
-        if block["price_changes"]:
-            lines.append("")
-            lines.append("**💰 价格变动**")
-            for shoe, oldv, newv in block["price_changes"][:30]:
-                lines.append(f"- {shoe} · **{oldv} → {newv}**")
+        url = best_url_for_name(name)
 
-        lines.append("")
+        # 过滤太“空”的候选：至少要命中日期或价格之一，否则容易误报
+        if not release_date and not price and not sku:
+            continue
 
-    # 证据：diff 折叠
-    lines.append("<details>")
-    lines.append("<summary>📎 原始 diff（证据，点击展开）</summary>")
-    lines.append("")
-    lines.append("```diff")
-    lines.append(diff_text.strip())
-    lines.append("```")
-    lines.append("")
-    lines.append("</details>")
+        # A 模式字段
+        fields = {
+            "name": norm_space(name),
+            "release_date": release_date,
+            "price": price,
+            "sku": sku,
+            "url": url,
+            "source_page": site_url,
+        }
 
-    return "\n".join(lines)
+        # B 模式额外内容：把附近摘要加入 hash（更敏感）
+        if detail_mode:
+            # 摘要做更强降噪，避免过多 UI 文案
+            snippet = [x for x in snippet_lines if not looks_noisy(x)]
+            fields["detail_snippet"] = "\n".join(snippet[:20])
 
-# —— GitHub API：只做“追加评论到固定 Issue” —— #
+        sid = stable_shoe_id(fields["name"], fields["url"])
+        if sid in seen_ids:
+            continue
+        seen_ids.add(sid)
+
+        shoes.append({"id": sid, "fields": fields})
+
+    return shoes
+
+def build_item_line(fields: dict) -> str:
+    # 你想要的格式：鞋名 + 发售时间 + 售价 + 网址
+    name = fields.get("name") or "Unknown"
+    date = fields.get("release_date") or "TBD"
+    price = fields.get("price") or "TBD"
+    url = fields.get("url") or fields.get("source_page") or ""
+    return f"{name} | {date} | {price}\n{url}"
+
+def diff_fields(old: dict, new: dict) -> List[str]:
+    keys = ["name", "release_date", "price", "sku", "url"]
+    changes = []
+    for k in keys:
+        if (old.get(k) or "") != (new.get(k) or ""):
+            changes.append(f"- {k}: {old.get(k,'') or '∅'} → {new.get(k,'') or '∅'}")
+    return changes
+
+# -------- GitHub Issue 评论（触发邮件） --------
 def gh_headers(token: str) -> dict:
     return {
         "Authorization": f"Bearer {token}",
         "Accept": "application/vnd.github+json",
         "X-GitHub-Api-Version": "2022-11-28",
-        "User-Agent": "ReleaseMonitor/2.0",
+        "User-Agent": "ReleaseMonitor/3.0",
     }
 
 def gh_comment_issue(repo: str, token: str, issue_number: int, body: str) -> None:
@@ -266,14 +283,108 @@ def gh_comment_issue(repo: str, token: str, issue_number: int, body: str) -> Non
     r = requests.post(url, headers=gh_headers(token), json={"body": body}, timeout=30)
     r.raise_for_status()
 
-def event_id_for(site_url: str, new_hash: str) -> str:
-    return hashlib.sha256(f"{site_url}::{new_hash}".encode("utf-8")).hexdigest()
+# -------- Telegram 通知（可选） --------
+def tg_send(bot_token: str, chat_id: str, text: str) -> None:
+    if not bot_token or not chat_id:
+        return
+    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+    payload = {
+        "chat_id": chat_id,
+        "text": text,
+        "disable_web_page_preview": True,
+    }
+    r = requests.post(url, json=payload, timeout=30)
+    r.raise_for_status()
+
+def event_id_for(site_url: str, shoe_id: str, new_hash: str) -> str:
+    raw = f"{site_url}::{shoe_id}::{new_hash}"
+    return hashlib.sha256(raw.encode("utf-8")).hexdigest()
+
+def build_comment_body(
+    site_name: str,
+    site_url: str,
+    created: List[dict],
+    updated: List[Tuple[dict, dict, List[str]]],
+    removed: List[dict],
+    detail_mode: bool,
+) -> str:
+    lines: List[str] = []
+    lines.append("🔔 **Sneaker-level Update Detected (V3)**")
+    lines.append(f"- **来源页面**：{site_name}")
+    lines.append(f"- **页面链接**：{site_url}")
+    lines.append(f"- **检测时间（台北）**：{now_taipei()}")
+    lines.append(f"- **模式**：{'B(更敏感)' if detail_mode else 'A(字段级)'}")
+    lines.append("")
+    lines.append("---")
+    lines.append("")
+
+    if created:
+        lines.append("## ✅ 新增鞋款")
+        for it in created[:40]:
+            lines.append(f"- {build_item_line(it['fields']).replace(chr(10), '  ')}")
+        lines.append("")
+
+    if updated:
+        lines.append("## 🔁 鞋款字段更新")
+        for old_it, new_it, changes in updated[:60]:
+            f = new_it["fields"]
+            lines.append(f"### {f.get('name','Unknown')}")
+            lines.append(build_item_line(f))
+            if changes:
+                lines.append("")
+                lines.extend(changes)
+            lines.append("")
+        lines.append("")
+
+    if removed:
+        lines.append("## 🗑️ 页面移除/不可见（谨慎参考）")
+        for it in removed[:20]:
+            lines.append(f"- {build_item_line(it['fields']).replace(chr(10), '  ')}")
+        lines.append("")
+
+    return "\n".join(lines).strip()
+
+def build_tg_text(
+    site_name: str,
+    created: List[dict],
+    updated: List[Tuple[dict, dict, List[str]]],
+    detail_mode: bool,
+) -> str:
+    # Telegram 更短：只发关键条目（你要的四要素）
+    parts: List[str] = []
+    parts.append(f"🔥 Sneaker Update (V3) | {site_name}")
+    parts.append(f"Mode: {'B' if detail_mode else 'A'} | {now_taipei()}")
+    parts.append("")
+    count = 0
+
+    def add_item(prefix: str, fields: dict):
+        nonlocal count
+        if count >= 12:
+            return
+        parts.append(f"{prefix} {fields.get('name','Unknown')} | {fields.get('release_date') or 'TBD'} | {fields.get('price') or 'TBD'}")
+        parts.append(fields.get("url") or fields.get("source_page") or "")
+        parts.append("")
+        count += 1
+
+    for it in created:
+        add_item("✅ NEW:", it["fields"])
+    for old_it, new_it, _changes in updated:
+        add_item("🔁 UPD:", new_it["fields"])
+
+    if count == 0:
+        parts.append("No actionable changes.")
+
+    return "\n".join(parts).strip()
 
 def main():
     token = os.getenv("GITHUB_TOKEN", "").strip()
     repo = os.getenv("GITHUB_REPOSITORY", "").strip()
     issue_number = os.getenv("ISSUE_NUMBER", "").strip()
-    force_test = os.getenv("FORCE_TEST_COMMENT", "").strip() == "1"
+
+    detail_mode = os.getenv("DETAIL_MODE", "").strip() == "1"  # 0=A(默认), 1=B(更敏感)
+
+    tg_token = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
+    tg_chat_id = os.getenv("TELEGRAM_CHAT_ID", "").strip()
 
     if not SITES:
         print("[WARN] SITES 为空，请在 monitor_calendars.py 顶部填入要监控的网址。")
@@ -282,71 +393,109 @@ def main():
     state = load_state()
     today = today_taipei()
 
-    # ✅ 强制测试模式（只执行一次就退出）
-    if force_test:
-        if not token or not repo or not issue_number:
-            print("[WARN] FORCE_TEST_COMMENT=1 but missing env, skip.")
-        else:
-            test_body = f"✅ Test comment from GitHub Actions @ {now_taipei()}\n\nThis is a connectivity test."
-            print(f"[ALERT] Posting TEST comment to fixed issue #{issue_number} ...")
-            gh_comment_issue(repo, token, int(issue_number), test_body)
-            print("[OK] Test comment added to fixed issue.")
-        return
-            
+    # notified[date] 存 event_id 列表，防止同一天同一变化刷屏
+    state["notified"].setdefault(today, [])
+
     for site in SITES:
-        name = site["name"]
-        url = site["url"]
+        site_name = site["name"]
+        site_url = site["url"]
 
-        print(f"\n[CHECK] {name} | {url}")
+        print(f"\n[CHECK] {site_name} | {site_url}")
+        html = fetch_html(site_url)
+        soup = soup_from_html(html)
 
-        html = fetch_html(url)
-        new_lines = html_to_lines(html)
-        new_hash = fingerprint(new_lines)
+        current = extract_candidate_shoes(site_url, soup, detail_mode=detail_mode)
 
-        prev = state["sites"].get(url, {})
-        old_hash = prev.get("hash")
-        old_lines = prev.get("lines", [])
+        # 读取历史
+        prev_shoes: Dict[str, dict] = safe_get(state, "shoes", site_url, default={}) or {}
+        cur_map: Dict[str, dict] = {it["id"]: it for it in current}
 
-        if old_hash == new_hash:
-            print("[OK] No important change (hash unchanged).")
+        created: List[dict] = []
+        removed: List[dict] = []
+        updated: List[Tuple[dict, dict, List[str]]] = []
+
+        # 新增/更新
+        for sid, cur_it in cur_map.items():
+            cur_fields = cur_it["fields"]
+            cur_hash = hash_fields(cur_fields)
+
+            old_it = prev_shoes.get(sid)
+            if not old_it:
+                created.append(cur_it)
+                continue
+
+            old_fields = old_it.get("fields", {})
+            old_hash = old_it.get("hash", "")
+
+            if old_hash != cur_hash:
+                # A 模式：只比较字段变化（我们 hash 里已是字段；B 模式 hash 里包含 snippet）
+                changes = diff_fields(old_fields, cur_fields)
+                updated.append((old_it, cur_it, changes))
+
+        # 移除（谨慎：页面结构变动会导致“看不到”，所以只做参考）
+        for sid, old_it in prev_shoes.items():
+            if sid not in cur_map:
+                removed.append(old_it)
+
+        # 如果没有“可行动变化”，更新 state 后跳过通知
+        actionable = bool(created or updated)
+        if not actionable:
+            print("[OK] No actionable shoe-level change.")
+            # 仍然更新鞋库（比如因噪音导致小波动，我们也尽量稳定）
+            state.setdefault("shoes", {}).setdefault(site_url, {})
+            state["shoes"][site_url] = {
+                sid: {"hash": hash_fields(it["fields"]), "fields": it["fields"]}
+                for sid, it in cur_map.items()
+            }
             continue
 
-        diff_text = unified_diff(old_lines, new_lines)
-        buckets = parse_diff_to_events(diff_text, old_lines, new_lines)
+        # 通知去重：对每个变化鞋生成 event_id，已通知则跳过
+        # 这里按“站点一次通知”合并成一个 comment + 一条 TG（避免太吵）
+        event_ids = []
+        for it in created:
+            event_ids.append(event_id_for(site_url, it["id"], hash_fields(it["fields"])))
+        for _old_it, new_it, _changes in updated:
+            event_ids.append(event_id_for(site_url, new_it["id"], hash_fields(new_it["fields"])))
 
-        # 是否存在“重要变化”
-        has_important = any(
-            (buckets[b]["new_shoes"] or buckets[b]["release_date_changes"] or buckets[b]["price_changes"])
-            for b in buckets
-        )
-        if not has_important:
-            print("[INFO] Changed but not important (filtered). Update state without notifying.")
-            state["sites"][url] = {"hash": new_hash, "lines": new_lines}
-            continue
-
-        # 去重：同一个 new_hash 不重复通知
-        eid = event_id_for(url, new_hash)
-        state["notified"].setdefault(today, {}).setdefault(name, [])
-        if eid in state["notified"][today][name]:
-            print("[SKIP] Duplicate event_id, already notified today.")
-            state["sites"][url] = {"hash": new_hash, "lines": new_lines}
-            continue
-
-        comment_body = build_fixed_issue_comment(name, url, buckets, diff_text)
-
-        if not token or not repo or not issue_number:
-            print("[WARN] 缺少 GITHUB_TOKEN / GITHUB_REPOSITORY / ISSUE_NUMBER，跳过 Issue 评论通知")
+        if all(eid in state["notified"][today] for eid in event_ids):
+            print("[SKIP] Duplicate events, already notified today.")
         else:
-            print(f"[ALERT] Posting comment to fixed issue #{issue_number} ...")
-            gh_comment_issue(repo, token, int(issue_number), comment_body)
-            print("[OK] Comment added to fixed issue.")
+            comment_body = build_comment_body(
+                site_name, site_url, created, updated, removed, detail_mode=detail_mode
+            )
 
-        # 更新 state
-        state["notified"][today][name].append(eid)
-        state["sites"][url] = {"hash": new_hash, "lines": new_lines}
+            # GitHub Issue 评论（邮件来源）
+            if token and repo and issue_number:
+                print(f"[ALERT] Posting comment to fixed issue #{issue_number} ...")
+                gh_comment_issue(repo, token, int(issue_number), comment_body)
+                print("[OK] Comment added.")
+            else:
+                print("[WARN] Missing GITHUB_TOKEN / GITHUB_REPOSITORY / ISSUE_NUMBER, skip Issue comment.")
+
+            # Telegram
+            if tg_token and tg_chat_id:
+                tg_text = build_tg_text(site_name, created, updated, detail_mode=detail_mode)
+                try:
+                    tg_send(tg_token, tg_chat_id, tg_text)
+                    print("[OK] Telegram sent.")
+                except Exception as e:
+                    print(f"[WARN] Telegram send failed: {e}")
+
+            # 写入已通知列表
+            for eid in event_ids:
+                if eid not in state["notified"][today]:
+                    state["notified"][today].append(eid)
+
+        # 更新鞋库 state
+        state.setdefault("shoes", {}).setdefault(site_url, {})
+        state["shoes"][site_url] = {
+            sid: {"hash": hash_fields(it["fields"]), "fields": it["fields"]}
+            for sid, it in cur_map.items()
+        }
 
     save_state(state)
     print("\n[DONE] State saved.")
-    
+
+
 if __name__ == "__main__":
     main()
