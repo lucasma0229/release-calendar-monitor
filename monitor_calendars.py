@@ -272,7 +272,8 @@ def event_id_for(site_url: str, new_hash: str) -> str:
 def main():
     token = os.getenv("GITHUB_TOKEN", "").strip()
     repo = os.getenv("GITHUB_REPOSITORY", "").strip()
-    issue_number = os.getenv("ISSUE_NUMBER", "").strip()  # workflow 里传入，例如 "17"
+    issue_number = os.getenv("ISSUE_NUMBER", "").strip()
+    force_test = os.getenv("FORCE_TEST_COMMENT", "").strip() == "1"
 
     if not SITES:
         print("[WARN] SITES 为空，请在 monitor_calendars.py 顶部填入要监控的网址。")
@@ -281,11 +282,23 @@ def main():
     state = load_state()
     today = today_taipei()
 
+    # ✅ 强制测试模式（只执行一次就退出）
+    if force_test:
+        if not token or not repo or not issue_number:
+            print("[WARN] FORCE_TEST_COMMENT=1 but missing env, skip.")
+        else:
+            test_body = f"✅ Test comment from GitHub Actions @ {now_taipei()}\n\nThis is a connectivity test."
+            print(f"[ALERT] Posting TEST comment to fixed issue #{issue_number} ...")
+            gh_comment_issue(repo, token, int(issue_number), test_body)
+            print("[OK] Test comment added to fixed issue.")
+        return
+            
     for site in SITES:
         name = site["name"]
         url = site["url"]
 
         print(f"\n[CHECK] {name} | {url}")
+
         html = fetch_html(url)
         new_lines = html_to_lines(html)
         new_hash = fingerprint(new_lines)
@@ -301,6 +314,7 @@ def main():
         diff_text = unified_diff(old_lines, new_lines)
         buckets = parse_diff_to_events(diff_text, old_lines, new_lines)
 
+        # 是否存在“重要变化”
         has_important = any(
             (buckets[b]["new_shoes"] or buckets[b]["release_date_changes"] or buckets[b]["price_changes"])
             for b in buckets
@@ -310,7 +324,7 @@ def main():
             state["sites"][url] = {"hash": new_hash, "lines": new_lines}
             continue
 
-        # 去重：同一个 new_hash 当天不重复通知
+        # 去重：同一个 new_hash 不重复通知
         eid = event_id_for(url, new_hash)
         state["notified"].setdefault(today, {}).setdefault(name, [])
         if eid in state["notified"][today][name]:
@@ -333,6 +347,6 @@ def main():
 
     save_state(state)
     print("\n[DONE] State saved.")
-
+    
 if __name__ == "__main__":
     main()
