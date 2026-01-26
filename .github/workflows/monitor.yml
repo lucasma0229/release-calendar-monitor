@@ -30,6 +30,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          ISSUE_NUMBER: "17"
         run: python monitor_calendars.py
 
       - name: Commit state.json
