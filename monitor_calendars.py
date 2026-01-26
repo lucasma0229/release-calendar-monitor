@@ -482,6 +482,11 @@ def main():
                     print(f"[WARN] Telegram send failed: {e}")
 
             # 写入已通知列表
+            if "notified" not in state or not isinstance(state["notified"], dict):state["notified"] = {}
+                
+            if today not in state["notified"] or not isinstance(state["notified"][today], list):state["notified"][today] = []
+                
+            # 写入已通知的事件ID
             for eid in event_ids:
                 if eid not in state["notified"][today]:
                     state["notified"][today].append(eid)
