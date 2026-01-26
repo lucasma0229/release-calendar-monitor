@@ -5452,6 +5452,17 @@
           "source_page": "https://sneakernews.com/release-dates/"
         }
       },
+      "8b3a30e628919d94": {
+        "hash": "32362135b92cf487a8e7cc512cf9a17cb332793db77249588500d94a243eaa96",
+        "fields": {
+          "name": "Hydrangeas/White/Bright Crimson/Black",
+          "release_date": "January 26, 2026",
+          "price": "$130",
+          "sku": "",
+          "url": "",
+          "source_page": "https://sneakernews.com/release-dates/"
+        }
+      },
       "f0718df6828c77db": {
         "hash": "ae184264f37ffe900958237b3d6eec7d68d8bb0c056344d4579e92b9ad67da7e",
         "fields": {
@@ -5606,14 +5617,14 @@
           "source_page": "https://sneakernews.com/release-dates/"
         }
       },
-      "d85a00e2a51d6da8": {
-        "hash": "86101a6684ffb569009ea7232053e0354ca11676b6ac23ec738ee56776f28035",
+      "e661b99d6d06f9c7": {
+        "hash": "c3a184309b5316d9f34c20e47f4a75699ca039a723eded0385a293a939408ac3",
         "fields": {
           "name": "Nike SNKRS US",
           "release_date": "January 27, 2026",
           "price": "$105",
           "sku": "",
-          "url": "https://bit.ly/2M7tavz",
+          "url": "https://bit.ly/4jVOpiY",
           "source_page": "https://sneakernews.com/release-dates/"
         }
       },
@@ -5625,17 +5636,6 @@
           "price": "$105",
           "sku": "",
           "url": "https://sneakernews.com/2026/01/05/nike-air-superfly-moc/",
-          "source_page": "https://sneakernews.com/release-dates/"
-        }
-      },
-      "1a369c1746639339": {
-        "hash": "ba926b4454e36d505b9ab851f03be0e2c9dfb35520e52a8ead0cd85e91339a7a",
-        "fields": {
-          "name": "adidas ZX 8000 \"JC & MT\"",
-          "release_date": "",
-          "price": "$150",
-          "sku": "",
-          "url": "https://sneakernews.com/2026/01/12/adidas-consortium-zx-8000-jc-mt-pack/",
           "source_page": "https://sneakernews.com/release-dates/"
         }
       }
@@ -6217,7 +6217,10 @@
       "SBD | Air Jordan Release Dates 2026": [],
       "SBD | Sneaker Release Dates 2026": [],
       "SneakerNews | Jordan Release Date Calendar 2026": [],
-      "SneakerNews | Sneaker Release Dates Calendar": []
+      "SneakerNews | Sneaker Release Dates Calendar": [
+        "50dcb5571a5ad77f84942f7b2453ebaa9bc32f87bc6636af299fa6aa907fb8b6",
+        "3108cf8b5bd2853e7ce4b68bdebea797f0e67f44ae7f30661035d9d4b76731a2"
+      ]
     }
   }
 }
