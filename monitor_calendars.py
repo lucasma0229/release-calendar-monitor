@@ -12,6 +12,13 @@ from bs4 import BeautifulSoup
 
 from wecom_sender import send_wecom_markdown, build_sneaker_markdown
 
+print("✅ wecom_sender imported OK")
+
+# ===== WeCom Webhook 测试（只执行一次）=====
+if os.getenv("WECOM_TEST") == "1":
+    send_wecom_markdown("**✅ WeCom Webhook 测试成功**\n\n如果你看到这条消息，说明企业微信推送已打通。")
+    raise SystemExit(0)
+
 STATE_PATH = Path("state.json")
 TZ_TAIPEI = timezone(timedelta(hours=8))
 
