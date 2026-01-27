@@ -54,9 +54,6 @@ jobs:
           # ✅ WeCom 方案 A：群机器人 Webhook
           WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
 
-          # ✅ 需要测试就打开；正式运行请删掉或注释
-          WECOM_TEST: "1"
-
         run: python monitor_calendars.py
 
       - name: Commit state.json
