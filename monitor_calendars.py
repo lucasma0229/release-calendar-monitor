@@ -333,6 +333,33 @@ def tg_send(
             raise RuntimeError(f"Telegram send failed after retries: {last_err}")
 
 
+# -------- WeCom 应用消息推送（企业微信） --------
+def wecom_get_token(corp_id: str, app_secret: str) -> str:
+    url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken"
+    r = requests.get(url, params={"corpid": corp_id, "corpsecret": app_secret}, timeout=30)
+    r.raise_for_status()
+    data = r.json()
+    if data.get("errcode") != 0:
+        raise RuntimeError(f"wecom gettoken error: {data}")
+    return data["access_token"]
+
+
+def wecom_send_text(access_token: str, agent_id: str, to_user: str, content: str) -> None:
+    url = "https://qyapi.weixin.qq.com/cgi-bin/message/send"
+    payload = {
+        "touser": to_user,  # 多个用 | 分隔
+        "msgtype": "text",
+        "agentid": int(agent_id),
+        "text": {"content": content},
+        "safe": 0,
+    }
+    r = requests.post(url, params={"access_token": access_token}, json=payload, timeout=30)
+    r.raise_for_status()
+    data = r.json()
+    if data.get("errcode") != 0:
+        raise RuntimeError(f"wecom send error: {data}")
+
+
 def event_id_for(site_url: str, shoe_id: str, new_hash: str) -> str:
     raw = f"{site_url}::{shoe_id}::{new_hash}"
     return hashlib.sha256(raw.encode("utf-8")).hexdigest()
@@ -419,6 +446,49 @@ def build_tg_text(
     return "\n".join(parts).strip()
 
 
+def build_wecom_text(
+    site_name: str,
+    created: List[dict],
+    updated: List[Tuple[dict, dict, List[str]]],
+    detail_mode: bool,
+) -> str:
+    """
+    企业微信消息建议短一些（text 最多 2048 字符左右更稳妥）。
+    这里发“精简版”，避免过长被拒绝。
+    """
+    parts: List[str] = []
+    parts.append(f"👟 Sneaker Update | {site_name}")
+    parts.append(f"Mode: {'B' if detail_mode else 'A'} | {now_taipei()}")
+    parts.append("")
+
+    count = 0
+
+    def add(fields: dict, prefix: str):
+        nonlocal count
+        if count >= 8:
+            return
+        name = fields.get("name", "Unknown")
+        date = fields.get("release_date") or "TBD"
+        price = fields.get("price") or "TBD"
+        url = fields.get("url") or fields.get("source_page") or ""
+        parts.append(f"{prefix} {name}")
+        parts.append(f"  - Date: {date} | Price: {price}")
+        if url:
+            parts.append(f"  - {url}")
+        parts.append("")
+        count += 1
+
+    for it in created:
+        add(it["fields"], "✅ NEW")
+    for _old, new_it, _chg in updated:
+        add(new_it["fields"], "🔁 UPD")
+
+    if count == 0:
+        parts.append("No actionable changes.")
+
+    return "\n".join(parts).strip()
+
+
 # ===== notified 结构：notified[date][site_name] = [event_id...] =====
 def ensure_notified_bucket(state: dict, day: str, site_name: str) -> List[str]:
     # 确保 notified 是 dict
@@ -451,6 +521,12 @@ def main():
     tg_token = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
     tg_chat_id = os.getenv("TELEGRAM_CHAT_ID", "").strip()
 
+    # 企业微信（WeCom）应用消息参数
+    wecom_corp_id = os.getenv("WECOM_CORP_ID", "").strip()
+    wecom_agent_id = os.getenv("WECOM_AGENT_ID", "").strip()
+    wecom_secret = os.getenv("WECOM_APP_SECRET", "").strip()
+    wecom_to_user = os.getenv("WECOM_TO_USER", "").strip()
+
     # ✅ 可控测试：只有 TELEGRAM_TEST=1 才会发一次测试消息（避免 schedule 每次都发）
     if os.getenv("TELEGRAM_TEST", "").strip() == "1" and tg_token and tg_chat_id:
         try:
@@ -458,6 +534,24 @@ def main():
             print("[OK] Telegram test message sent.")
         except Exception as e:
             print(f"[WARN] Telegram test message failed: {e}")
+
+    # ✅ 企业微信可控测试：只有 WECOM_TEST=1 才会发一次测试消息
+    if os.getenv("WECOM_TEST", "").strip() == "1":
+        print("[DEBUG] WECOM_CORP_ID exists:", bool(wecom_corp_id))
+        print("[DEBUG] WECOM_AGENT_ID:", wecom_agent_id)
+        print("[DEBUG] WECOM_TO_USER:", wecom_to_user)
+
+        if not (wecom_corp_id and wecom_agent_id and wecom_secret and wecom_to_user):
+            raise RuntimeError("Missing WeCom env vars for test.")
+
+        token_wecom = wecom_get_token(wecom_corp_id, wecom_secret)
+        wecom_send_text(
+            token_wecom,
+            wecom_agent_id,
+            wecom_to_user,
+            f"✅ 企业微信应用消息已连通（GitHub Actions 测试）\n{now_taipei()}",
+        )
+        print("[OK] WeCom test message sent.")
 
     if not SITES:
         print("[WARN] SITES 为空，请在 monitor_calendars.py 顶部填入要监控的网址。")
@@ -548,6 +642,18 @@ def main():
                     print(f"[WARN] Telegram send failed: {e}")
             else:
                 print("[WARN] Missing TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID, skip Telegram.")
+
+            # 企业微信 WeCom（只在有 created/updated 时才会走到这里）
+            if wecom_corp_id and wecom_agent_id and wecom_secret and wecom_to_user:
+                wecom_text = build_wecom_text(site_name, created, updated, detail_mode=detail_mode)
+                try:
+                    token_wecom = wecom_get_token(wecom_corp_id, wecom_secret)
+                    wecom_send_text(token_wecom, wecom_agent_id, wecom_to_user, wecom_text)
+                    print("[OK] WeCom sent.")
+                except Exception as e:
+                    print(f"[WARN] WeCom send failed: {e}")
+            else:
+                print("[WARN] Missing WECOM_CORP_ID / WECOM_AGENT_ID / WECOM_APP_SECRET / WECOM_TO_USER, skip WeCom.")
 
             # 写入已通知列表（按 date + site_name）
             for eid in event_ids:
