@@ -2,10 +2,10 @@
   "shoes": {
     "https://sneakerbardetroit.com/air-jordan-release-dates/": {
       "a0d817d183e4f73a": {
-        "hash": "fbf0780aeb5a7f7ff9adfbcae236a9ab75ff6e65e532daa1608ae65f0b81ae35",
+        "hash": "f11cefb92320d8785450c2eb39b469c9fb2a34402b58d3ce6129c4579d89cb2d",
         "fields": {
           "name": "Sneaker Bar Detroit",
-          "release_date": "January 26, 2026",
+          "release_date": "January 27, 2026",
           "price": "",
           "sku": "",
           "url": "https://sneakerbardetroit.com/",
@@ -13,10 +13,10 @@
         }
       },
       "1e0497887b11437a": {
-        "hash": "977bdd371f231081d1b6d4d9e1dd19bdcfc933470c37257f67fb8bd61a9a0bde",
+        "hash": "ce09b4f509d4324ad6539dd3485f086b29512d15ff81301bbf7e14e9f7372dbf",
         "fields": {
           "name": "Sneaker News",
-          "release_date": "January 26, 2026",
+          "release_date": "January 27, 2026",
           "price": "",
           "sku": "",
           "url": "https://sneakerbardetroit.com",
@@ -24,10 +24,10 @@
         }
       },
       "7d5db904f660bf71": {
-        "hash": "18f74000fd9ab97e573c6e3d664344ca7ec92befa173375de82ba1c4d6dd8304",
+        "hash": "5893a714368453900b24d73ba32c89374dc37825e2b75599c52796f122b13d9b",
         "fields": {
           "name": "your username",
-          "release_date": "January 26, 2026",
+          "release_date": "January 27, 2026",
           "price": "",
           "sku": "",
           "url": "",
@@ -35,10 +35,10 @@
         }
       },
       "d57fcb9def75c76c": {
-        "hash": "2464acf6cff4903c7ea72084f1bf55f1fda9f1531066a2e7b229bbcaa8d0b08b",
+        "hash": "d15c7914094a4f445283e41c091f5bae71ed62b6fe2640e9dca681d5170c53a2",
         "fields": {
           "name": "your password",
-          "release_date": "January 26, 2026",
+          "release_date": "January 27, 2026",
           "price": "",
           "sku": "",
           "url": "#",
@@ -46,10 +46,10 @@
         }
       },
       "0db2c4008df2b89a": {
-        "hash": "83be5d79a4bb0bc664cf1a6491b86e58c05b5a23b614b43b4933b64811ce24d8",
+        "hash": "c4a6466ab33ea713974199e1945819bdb992bf9c52933b0a0a05e95663651771",
         "fields": {
           "name": "Forgot your password? Get help",
-          "release_date": "January 26, 2026",
+          "release_date": "January 27, 2026",
           "price": "",
           "sku": "",
           "url": "#",
@@ -57,10 +57,10 @@
         }
       },
       "af53a759c454fc61": {
-        "hash": "f7a182b82a3da64942dae0b35e202b547e6bc4f301d1d9f83d09cfd0fe368789",
+        "hash": "53a67a41f2a48e0b5b6372521dfed260f9f3bb576ee133e71f1fc0f9d776e5f9",
         "fields": {
           "name": "Password recovery",
-          "release_date": "January 26, 2026",
+          "release_date": "January 27, 2026",
           "price": "",
           "sku": "",
           "url": "",
@@ -68,10 +68,10 @@
         }
       },
       "fdda5e41034f9852": {
-        "hash": "6c56aad1a5beddfd0402593e9eb2db7aebbe59ca80bc49dde6e5641c54cc7ce0",
+        "hash": "bba80ec9c8eef3b2fd1cc27769eb2b996ef234f9fd10617b8418c7381943e895",
         "fields": {
           "name": "Recover your password",
-          "release_date": "January 26, 2026",
+          "release_date": "January 27, 2026",
           "price": "",
           "sku": "",
           "url": "",
@@ -79,10 +79,10 @@
         }
       },
       "36e542c62de2ec17": {
-        "hash": "4d3a36212da5b0d961c580172ed1dc73f72f166ff7c5ae3c5af43e4fdc0d307f",
+        "hash": "adc84f7035b44aa4ec8bf804e17aaffb8237e2f4361539921cb993bc2678c331",
         "fields": {
           "name": "your email",
-          "release_date": "January 26, 2026",
+          "release_date": "January 27, 2026",
           "price": "",
           "sku": "",
           "url": "",
@@ -90,10 +90,10 @@
         }
       },
       "14365af32bc84111": {
-        "hash": "1ab2e02fffdba36edfef06880956c6c6919f960a488660e917a3ee1b3d18634f",
+        "hash": "61a7ca835128859c7714a392c6b5fad6206d32b392435cfd2c8c9b7f0de13202",
         "fields": {
           "name": "A password will be e-mailed to you.",
-          "release_date": "January 26, 2026",
+          "release_date": "January 27, 2026",
           "price": "",
           "sku": "",
           "url": "",
@@ -6269,7 +6269,17 @@
       ]
     },
     "2026-01-27": {
-      "SBD | Air Jordan Release Dates 2026": [],
+      "SBD | Air Jordan Release Dates 2026": [
+        "4beb2673c0913ef6aa7289752aa401442cf519ff2db32ca47b3863433dd0713d",
+        "cfdd0a3c24f2b689c837af2e68c17a4ac77a7dd440b0170e11cb0a533a815c7d",
+        "91b2c3fa15876771feed89898cfefd37f400564a383e387f71c7e6b2ee50146f",
+        "06696071562f4bbd36147c0f4ee36324d1edf36783119eb83fd3a317e6293242",
+        "7c801dc4b37d983ed4d550f7c1d7cd0c27c7337c43c3843b7f289fcab9ffe0b7",
+        "6dc36debe88ac5ca8158fa11990acfea66bba3481188641a6d175693a585864c",
+        "576bf1f85169e51b296c33f7d321082988ec415e617e8d13be4d248ecc9f7b5e",
+        "a4765b69a16bfd3b44e72b1af6154218e17d73556cffe159a1b4ec1eb6e52470",
+        "b2503f61e98210173e04078d6c779e81e1924f2f633b6b9c32544bcf472ab8e6"
+      ],
       "SBD | Sneaker Release Dates 2026": [
         "acb79935dd441897d7b9a76d0f813c129bc7e7afd994e9ed50de17de6674f0b5",
         "c2ea7686f61518aa1577e6a5f0268f676d777e391149fc665995a4abd0a94f4e",
