@@ -451,6 +451,10 @@ def main():
     tg_token = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
     tg_chat_id = os.getenv("TELEGRAM_CHAT_ID", "").strip()
 
+    print("[DEBUG] tg_token exists:", bool(tg_token))
+    print("[DEBUG] tg_chat_id:", tg_chat_id)
+    print("[DEBUG] TELEGRAM_TEST:", os.getenv("TELEGRAM_TEST"))
+
     # ✅ 可控测试：只有 TELEGRAM_TEST=1 才会发一次测试消息（避免 schedule 每次都发）
     if os.getenv("TELEGRAM_TEST", "").strip() == "1" and tg_token and tg_chat_id:
         try:
