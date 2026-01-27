@@ -54,7 +54,7 @@ jobs:
           WECOM_WEBHOOK: ${{ secrets.WECOM_WEBHOOK_URL }}
 
         # ✅ 新脚本文件名
-        run: python monitor_calendars.py
+        run: python monitor_news_v5.py
 
       - name: Commit state.json
         run: |
