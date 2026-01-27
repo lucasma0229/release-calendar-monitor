@@ -1,10 +1,11 @@
 import os
 import re
 import json
+import time
 import hashlib
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Optional
 
 import requests
 from bs4 import BeautifulSoup
@@ -281,17 +282,55 @@ def gh_comment_issue(repo: str, token: str, issue_number: int, body: str) -> Non
 
 
 # -------- Telegram 通知（可选） --------
-def tg_send(bot_token: str, chat_id: str, text: str) -> None:
+def tg_send(
+    bot_token: str,
+    chat_id: str,
+    text: str,
+    *,
+    parse_mode: Optional[str] = None,   # "HTML" / "MarkdownV2" / None
+    disable_preview: bool = True,
+) -> None:
+    """
+    Telegram Bot API sender:
+    - Auto split long messages (Telegram limit: 4096)
+    - Retry on transient failures
+    """
     if not bot_token or not chat_id:
         return
+
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
-    payload = {
-        "chat_id": chat_id,
-        "text": text,
-        "disable_web_page_preview": True,
-    }
-    r = requests.post(url, json=payload, timeout=30)
-    r.raise_for_status()
+
+    # Telegram hard limit is 4096 chars per message.
+    MAX_LEN = 3900  # 留余量
+    chunks = [text[i:i + MAX_LEN] for i in range(0, len(text or ""), MAX_LEN)] or [""]
+
+    last_err = None
+    for chunk in chunks:
+        payload = {
+            "chat_id": chat_id,
+            "text": chunk,
+            "disable_web_page_preview": disable_preview,
+        }
+        if parse_mode:
+            payload["parse_mode"] = parse_mode
+
+        # 3 retries
+        ok = False
+        for i in range(3):
+            try:
+                r = requests.post(url, json=payload, timeout=30)
+                r.raise_for_status()
+                data = r.json()
+                if not data.get("ok"):
+                    raise RuntimeError(f"telegram api not ok: {data}")
+                ok = True
+                break
+            except Exception as e:
+                last_err = e
+                time.sleep(1.5 * (i + 1))
+
+        if not ok:
+            raise RuntimeError(f"Telegram send failed after retries: {last_err}")
 
 
 def event_id_for(site_url: str, shoe_id: str, new_hash: str) -> str:
@@ -360,7 +399,11 @@ def build_tg_text(
         nonlocal count
         if count >= 12:
             return
-        parts.append(f"{prefix} {fields.get('name','Unknown')} | {fields.get('release_date') or 'TBD'} | {fields.get('price') or 'TBD'}")
+        parts.append(
+            f"{prefix} {fields.get('name','Unknown')} | "
+            f"{fields.get('release_date') or 'TBD'} | "
+            f"{fields.get('price') or 'TBD'}"
+        )
         parts.append(fields.get("url") or fields.get("source_page") or "")
         parts.append("")
         count += 1
@@ -407,6 +450,14 @@ def main():
 
     tg_token = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
     tg_chat_id = os.getenv("TELEGRAM_CHAT_ID", "").strip()
+
+    # ✅ 可控测试：只有 TELEGRAM_TEST=1 才会发一次测试消息（避免 schedule 每次都发）
+    if os.getenv("TELEGRAM_TEST", "").strip() == "1" and tg_token and tg_chat_id:
+        try:
+            tg_send(tg_token, tg_chat_id, f"✅ Telegram 通道已连通（GitHub Actions 测试）\n{now_taipei()}")
+            print("[OK] Telegram test message sent.")
+        except Exception as e:
+            print(f"[WARN] Telegram test message failed: {e}")
 
     if not SITES:
         print("[WARN] SITES 为空，请在 monitor_calendars.py 顶部填入要监控的网址。")
@@ -487,14 +538,16 @@ def main():
             else:
                 print("[WARN] Missing GITHUB_TOKEN / GITHUB_REPOSITORY / ISSUE_NUMBER, skip Issue comment.")
 
-            # Telegram
+            # Telegram（只在有 created/updated 时才会走到这里）
             if tg_token and tg_chat_id:
                 tg_text = build_tg_text(site_name, created, updated, detail_mode=detail_mode)
                 try:
-                    tg_send(tg_token, tg_chat_id, tg_text)
+                    tg_send(tg_token, tg_chat_id, tg_text, parse_mode=None, disable_preview=True)
                     print("[OK] Telegram sent.")
                 except Exception as e:
                     print(f"[WARN] Telegram send failed: {e}")
+            else:
+                print("[WARN] Missing TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID, skip Telegram.")
 
             # 写入已通知列表（按 date + site_name）
             for eid in event_ids:
@@ -513,5 +566,4 @@ def main():
 
 
 if __name__ == "__main__":
-    send_telegram("✅ Telegram 通道已连通（GitHub Actions 测试）")
     main()
