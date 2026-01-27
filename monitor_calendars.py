@@ -10,6 +10,7 @@ from typing import Dict, List, Tuple, Optional
 import requests
 from bs4 import BeautifulSoup
 
+from wecom_sender import send_wecom_markdown, build_sneaker_markdown
 
 STATE_PATH = Path("state.json")
 TZ_TAIPEI = timezone(timedelta(hours=8))
