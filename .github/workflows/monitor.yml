@@ -36,8 +36,8 @@ jobs:
           DETAIL_MODE: "0"
 
           # ✅ Telegram（去 GitHub → Settings → Secrets and variables → Actions 添加）
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN || '' }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID || '' }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
 
           TELEGRAM_TEST: "1"
         run: python monitor_calendars.py
