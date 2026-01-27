@@ -3039,6 +3039,39 @@
           "source_page": "https://sneakerbardetroit.com/sneaker-release-dates/"
         }
       },
+      "435332c673735065": {
+        "hash": "81904c14eacfc4dee538a0404ef1ce57a42af4ebab389ffa60ce442f1f184ef4",
+        "fields": {
+          "name": "NikeSKIMS Rift “Satin”",
+          "release_date": "February 5, 2026",
+          "price": "$160",
+          "sku": "IQ7158-001",
+          "url": "https://sneakerbardetroit.com/category/nike/",
+          "source_page": "https://sneakerbardetroit.com/sneaker-release-dates/"
+        }
+      },
+      "2095412ae73598e6": {
+        "hash": "f4a59c06ce5ee4798bc1f5cc7853337783a78d201fd59b2ef048afef7845e98b",
+        "fields": {
+          "name": "Color: Black/Black-Black",
+          "release_date": "February 5, 2026",
+          "price": "$160",
+          "sku": "IQ7158-001",
+          "url": "",
+          "source_page": "https://sneakerbardetroit.com/sneaker-release-dates/"
+        }
+      },
+      "2a4393a5d5e36a75": {
+        "hash": "9e0ea684dce5a722830fdae7430cfb77519657925859b0ce707669537d1f0150",
+        "fields": {
+          "name": "Color: Silt Red/Silt Red-Silt Red",
+          "release_date": "February 5, 2026",
+          "price": "$160",
+          "sku": "IQ7158-600",
+          "url": "",
+          "source_page": "https://sneakerbardetroit.com/sneaker-release-dates/"
+        }
+      },
       "153548a867ca6af4": {
         "hash": "e9156ef60222a5ae5799a37985602ee5b3fabc0a50e72906e75a98caa2c2f2fe",
         "fields": {
@@ -3530,6 +3563,28 @@
           "release_date": "March 5, 2026",
           "price": "$125",
           "sku": "HF2793-004",
+          "url": "",
+          "source_page": "https://sneakerbardetroit.com/sneaker-release-dates/"
+        }
+      },
+      "0385864ca1f64700": {
+        "hash": "39d58dd71c249875def77ef7f3f77106af21fecc276143421dd04ceb1e4de4bf",
+        "fields": {
+          "name": "Nike Air Max 95 OG “Neon”",
+          "release_date": "March 5, 2026",
+          "price": "$190",
+          "sku": "HM4740-001",
+          "url": "https://sneakerbardetroit.com/category/nike/",
+          "source_page": "https://sneakerbardetroit.com/sneaker-release-dates/"
+        }
+      },
+      "87e419f106f4ea1b": {
+        "hash": "b7bd6631b4e1f13e1ab1d626a00e69a734daf3be006e28c9386bd85b8a0ca762",
+        "fields": {
+          "name": "Color: Black/Cool Grey-Neon Yellow",
+          "release_date": "March 5, 2026",
+          "price": "$190",
+          "sku": "HM4740-001",
           "url": "",
           "source_page": "https://sneakerbardetroit.com/sneaker-release-dates/"
         }
@@ -6217,7 +6272,12 @@
       "SBD | Air Jordan Release Dates 2026": [],
       "SBD | Sneaker Release Dates 2026": [
         "acb79935dd441897d7b9a76d0f813c129bc7e7afd994e9ed50de17de6674f0b5",
-        "c2ea7686f61518aa1577e6a5f0268f676d777e391149fc665995a4abd0a94f4e"
+        "c2ea7686f61518aa1577e6a5f0268f676d777e391149fc665995a4abd0a94f4e",
+        "d352998c54e7faf855668d391b842089d28a488957ad37ee37165503219844e6",
+        "7f012bcbbd120e068a43775b66e17e7d46c0a74f91f3f10620c77ae3798e52c8",
+        "5e4685d0d0da5e9ec2b7506ab161d191d3b5bdb9d36a48d4636fa79449b2a856",
+        "24b7e9748d2a97c4dd1ff7631c798f59fcd6aca16e42a439d1cda27032f35618",
+        "6c7bc9efac7de786f2c019ba059639bb6e639cbf8392625dfe5a688caabc2ec8"
       ],
       "SneakerNews | Jordan Release Date Calendar 2026": [
         "eee19d51255d553cfe3763619047d73b32ba7c4723446d1a6e55d568fc0a34bc",
