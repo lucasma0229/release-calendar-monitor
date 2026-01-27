@@ -43,6 +43,8 @@ jobs:
           WECOM_AGENT_ID: ${{ secrets.WECOM_AGENT_ID }}
           WECOM_APP_SECRET: ${{ secrets.WECOM_APP_SECRET }}
           WECOM_TO_USER: ${{ secrets.WECOM_TO_USER }}
+
+          WECOM_TEST: "1"
           
         run: python monitor_calendars.py
         
