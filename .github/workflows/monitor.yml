@@ -39,8 +39,13 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
 
+          WECOM_CORP_ID: ${{ secrets.WECOM_CORP_ID }}
+          WECOM_AGENT_ID: ${{ secrets.WECOM_AGENT_ID }}
+          WECOM_APP_SECRET: ${{ secrets.WECOM_APP_SECRET }}
+          WECOM_TO_USER: ${{ secrets.WECOM_TO_USER }}
+          
         run: python monitor_calendars.py
-
+        
       - name: Commit state.json
         run: |
           git config user.name "github-actions[bot]"
