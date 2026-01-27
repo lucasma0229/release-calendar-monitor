@@ -44,16 +44,16 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           ISSUE_NUMBER: "17"
 
-          # ✅ A/B 开关：0 = A（字段级，默认），1 = B（更敏感）
+          # ✅ 兼容保留（即使新脚本暂时不用，也不影响）
           DETAIL_MODE: "0"
 
-          # ✅ Telegram（去 GitHub → Settings → Secrets and variables → Actions 添加）
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # ✅ Telegram（变量名对齐新脚本）
+          TG_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # ✅ 企业微信（变量名对齐新脚本）
+          WECOM_WEBHOOK: ${{ secrets.WECOM_WEBHOOK_URL }}
 
-          # ✅ WeCom 方案 A：群机器人 Webhook
-          WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
-
+        # ✅ 新脚本文件名
         run: python monitor_calendars.py
 
       - name: Commit state.json
