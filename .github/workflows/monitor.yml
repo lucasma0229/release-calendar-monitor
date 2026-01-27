@@ -26,6 +26,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      # ✅ 只检查是否“有注入”，不打印 secret 内容
+      - name: Check WeCom webhook env
+        env:
+          WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
+        run: |
+          if [ -z "$WECOM_WEBHOOK_URL" ]; then
+            echo "WECOM_WEBHOOK_URL is EMPTY"
+            exit 1
+          else
+            echo "WECOM_WEBHOOK_URL is SET"
+          fi
+
       - name: Run monitor
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -39,15 +51,14 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
 
-          WECOM_CORP_ID: ${{ secrets.WECOM_CORP_ID }}
-          WECOM_AGENT_ID: ${{ secrets.WECOM_AGENT_ID }}
-          WECOM_APP_SECRET: ${{ secrets.WECOM_APP_SECRET }}
-          WECOM_TO_USER: ${{ secrets.WECOM_TO_USER }}
+          # ✅ WeCom 方案 A：群机器人 Webhook
+          WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
 
+          # ✅ 需要测试就打开；正式运行请删掉或注释
           WECOM_TEST: "1"
-          
+
         run: python monitor_calendars.py
-        
+
       - name: Commit state.json
         run: |
           git config user.name "github-actions[bot]"
