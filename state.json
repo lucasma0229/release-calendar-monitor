@@ -6350,12 +6350,12 @@
   },
   "sites": {
     "https://sneakerbardetroit.com/air-jordan-release-dates/": {
-      "last_checked": "2026-01-28 12:11",
-      "count": 75,
+      "last_checked": "2026-01-28 13:48",
+      "count": 77,
       "items": {
         "SKU:IB7066-001": {
           "name": "Style Code",
-          "date": "January 27, 2026",
+          "date": "January 28, 2026",
           "sku": "IB7066-001",
           "price": "未知",
           "tag": "Jordan",
@@ -6893,6 +6893,15 @@
           "source_name": "SBD | Air Jordan Release Dates",
           "source_url": "https://sneakerbardetroit.com/air-jordan-release-dates/"
         },
+        "SKU:IV6508-030": {
+          "name": "Style Code",
+          "date": "September 5, 2026",
+          "sku": "IV6508-030",
+          "price": "未知",
+          "tag": "Jordan",
+          "source_name": "SBD | Air Jordan Release Dates",
+          "source_url": "https://sneakerbardetroit.com/air-jordan-release-dates/"
+        },
         "SKU:CT8013-103": {
           "name": "Style Code",
           "date": "September 12, 2026",
@@ -6920,9 +6929,18 @@
           "source_name": "SBD | Air Jordan Release Dates",
           "source_url": "https://sneakerbardetroit.com/air-jordan-release-dates/"
         },
-        "SKU:HF6248-002": {
+        "SKU:IQ5497-200": {
           "name": "Style Code",
           "date": "December 12, 2026",
+          "sku": "IQ5497-200",
+          "price": "未知",
+          "tag": "Jordan",
+          "source_name": "SBD | Air Jordan Release Dates",
+          "source_url": "https://sneakerbardetroit.com/air-jordan-release-dates/"
+        },
+        "SKU:HF6248-002": {
+          "name": "Style Code",
+          "date": "December 26, 2026",
           "sku": "HF6248-002",
           "price": "未知",
           "tag": "Jordan",
@@ -6931,7 +6949,7 @@
         },
         "SKU:HV0823-607": {
           "name": "Style Code",
-          "date": "December 12, 2026",
+          "date": "December 26, 2026",
           "sku": "HV0823-607",
           "price": "未知",
           "tag": "Jordan",
@@ -6940,7 +6958,7 @@
         },
         "SKU:IV6048-001": {
           "name": "Style Code",
-          "date": "December 12, 2026",
+          "date": "December 26, 2026",
           "sku": "IV6048-001",
           "price": "未知",
           "tag": "Jordan",
@@ -6949,7 +6967,7 @@
         },
         "SKU:IW2872-700": {
           "name": "Style Code",
-          "date": "December 12, 2026",
+          "date": "December 26, 2026",
           "sku": "IW2872-700",
           "price": "未知",
           "tag": "Jordan",
@@ -6958,7 +6976,7 @@
         },
         "SKU:IQ5976-100": {
           "name": "Style Code",
-          "date": "December 12, 2026",
+          "date": "December 26, 2026",
           "sku": "IQ5976-100",
           "price": "未知",
           "tag": "Jordan",
@@ -6967,7 +6985,7 @@
         },
         "SKU:IQ5135-001": {
           "name": "Style Code",
-          "date": "December 12, 2026",
+          "date": "December 26, 2026",
           "sku": "IQ5135-001",
           "price": "未知",
           "tag": "Jordan",
@@ -6976,7 +6994,7 @@
         },
         "SKU:IQ5706-400": {
           "name": "Style Code",
-          "date": "December 12, 2026",
+          "date": "December 26, 2026",
           "sku": "IQ5706-400",
           "price": "未知",
           "tag": "Jordan",
@@ -7031,12 +7049,12 @@
       }
     },
     "https://sneakerbardetroit.com/sneaker-release-dates/": {
-      "last_checked": "2026-01-28 12:11",
+      "last_checked": "2026-01-28 13:49",
       "count": 106,
       "items": {
         "SKU:IM6125-100": {
           "name": "Style Code",
-          "date": "January 27, 2026",
+          "date": "January 28, 2026",
           "sku": "IM6125-100",
           "price": "未知",
           "tag": "Other",
@@ -7991,12 +8009,12 @@
       }
     },
     "https://sneakernews.com/air-jordan-release-dates/": {
-      "last_checked": "2026-01-28 12:11",
+      "last_checked": "2026-01-28 13:49",
       "count": 0,
       "items": {}
     },
     "https://sneakernews.com/release-dates/": {
-      "last_checked": "2026-01-28 12:11",
+      "last_checked": "2026-01-28 13:49",
       "count": 0,
       "items": {}
     }
