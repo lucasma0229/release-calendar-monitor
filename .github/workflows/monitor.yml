@@ -62,26 +62,26 @@ jobs:
 
       # ✅ 关键修复：push 前先 pull --rebase，并且只在 state.json 有变化时才提交
       - name: Commit state.json safely
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -e
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # 确保 remote url 使用 token（避免权限/交互问题）
-          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          # 1) 先暂存 state.json
+          git add state.json
 
-          # 拉最新，避免远端比本地新导致 rejected (fetch first)
-          git pull --rebase origin "${GITHUB_REF_NAME}"
+          # 2) 如果没有变化，直接结束
+          git diff --cached --quiet && echo "No changes to state.json" && exit 0
 
-          # 只提交 state.json（如果有变化）
-          if git status --porcelain | grep -q "^ M state.json\|^A  state.json\|^?? state.json"; then
-            git add state.json
-            git commit -m "chore: update monitor state"
-          else
-            echo "No changes in state.json. Skip commit."
+          # 3) 先提交本地变更
+          git commit -m "chore: update monitor state"
+
+          # 4) 同步远端（避免冲突）
+          git pull --rebase --autostash
+
+          # 5) 推送
+          git push
             exit 0
           fi
 
