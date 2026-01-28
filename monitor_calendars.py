@@ -3,7 +3,7 @@ import re
 import json
 import time
 import hashlib
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Any
@@ -11,7 +11,6 @@ from urllib.parse import urljoin, urlparse
 
 import requests
 from bs4 import BeautifulSoup
-
 
 # =========================
 # ColdTreasure V2.0 Settings
@@ -55,7 +54,9 @@ CAT_JEWELRY = "jewelry"
 CAT_IP = "ip"
 CAT_CULTURE = "culture"
 
+# 100+ brand dictionary (aliases). You can extend safely.
 BRAND_DICT: Dict[str, List[str]] = {
+    # --- Sports (Global) ---
     "Nike": ["Nike", "NIKE"],
     "Jordan": ["Jordan", "Air Jordan", "AJ", "Jumpman"],
     "adidas": ["adidas", "Adidas", "ADIDAS"],
@@ -85,14 +86,17 @@ BRAND_DICT: Dict[str, List[str]] = {
     "Xtep": ["Xtep", "特步"],
     "PEAK": ["PEAK", "Peak", "匹克"],
     "Descente": ["Descente"],
+    "Lotto": ["Lotto"],
     "Umbro": ["Umbro"],
     "Skechers": ["Skechers"],
     "Timberland": ["Timberland"],
     "The North Face": ["The North Face", "TNF"],
     "Arc'teryx": ["Arc'teryx", "Arcteryx"],
     "Columbia": ["Columbia"],
+    "Nike SB": ["Nike SB", "SB"],
     "YEEZY": ["YEEZY", "Yeezy"],
 
+    # --- Streetwear / labels ---
     "Supreme": ["Supreme"],
     "Stüssy": ["Stussy", "Stüssy"],
     "BAPE": ["BAPE", "A Bathing Ape"],
@@ -100,21 +104,55 @@ BRAND_DICT: Dict[str, List[str]] = {
     "KITH": ["Kith", "KITH"],
     "Off-White": ["Off-White", "Off White"],
     "Fragment": ["Fragment", "fragment design"],
-    "A Ma Maniére": ["A Ma Maniére", "A Ma Maniere", "AMM"],
+    "AMBUSH": ["AMBUSH"],
+    "Palace": ["Palace"],
+    "Fear of God": ["Fear of God", "FOG"],
+    "A-COLD-WALL*": ["A-COLD-WALL", "A-COLD-WALL*"],
+    "Human Made": ["Human Made"],
+    "WTAPS": ["WTAPS"],
+    "NEIGHBORHOOD": ["NEIGHBORHOOD", "Neighborhood"],
+    "Rhude": ["Rhude"],
+    "UNDEFEATED": ["UNDEFEATED"],
+    "Patta": ["Patta"],
+    "Noah": ["Noah"],
     "Aimé Leon Dore": ["Aimé Leon Dore", "Aime Leon Dore", "ALD"],
     "JJJJound": ["JJJJound"],
+    "Stone Island": ["Stone Island"],
+    "Comme des Garçons": ["Comme des Garçons", "Comme des Garcons", "CDG"],
+    "Bodega": ["Bodega"],
+    "Concepts": ["Concepts"],
+    "SNS": ["Sneakersnstuff", "SNS"],
+    "END.": ["END.", "END Clothing"],
+    "size?": ["size?"],
+    "atmos": ["atmos"],
+    "Union": ["Union"],
+    "A Ma Maniére": ["A Ma Maniére", "A Ma Maniere", "AMM"],
 
+    # --- Luxury ---
     "Dior": ["Dior"],
     "Louis Vuitton": ["Louis Vuitton", "LV"],
     "Gucci": ["Gucci"],
     "Balenciaga": ["Balenciaga"],
     "Prada": ["Prada"],
+    "Givenchy": ["Givenchy"],
+    "Saint Laurent": ["Saint Laurent", "YSL"],
+    "Alexander McQueen": ["Alexander McQueen", "McQueen"],
+    "Maison Margiela": ["Maison Margiela", "Margiela"],
+    "Rick Owens": ["Rick Owens"],
+    "Versace": ["Versace"],
+    "Burberry": ["Burberry"],
+    "Ferragamo": ["Ferragamo", "Salvatore Ferragamo"],
+    "Loewe": ["Loewe"],
+    "Celine": ["Celine", "Céline"],
+    "Bottega Veneta": ["Bottega Veneta"],
+    "Moncler": ["Moncler"],
+
+    # --- Jewelry / culture / IP ---
     "Tiffany & Co.": ["Tiffany", "Tiffany & Co."],
     "Swarovski": ["Swarovski"],
     "Cartier": ["Cartier"],
     "Bvlgari": ["Bvlgari", "Bulgari"],
     "Chrome Hearts": ["Chrome Hearts"],
-
     "Disney": ["Disney"],
     "Marvel": ["Marvel"],
     "Star Wars": ["Star Wars"],
@@ -125,16 +163,55 @@ BRAND_DICT: Dict[str, List[str]] = {
     "Naruto": ["Naruto"],
     "One Piece": ["One Piece"],
     "Dragon Ball": ["Dragon Ball"],
+    "LEGO": ["LEGO"],
     "Hello Kitty": ["Hello Kitty", "Sanrio"],
     "Travis Scott": ["Travis Scott"],
     "Bad Bunny": ["Bad Bunny"],
     "Pharrell": ["Pharrell", "Pharrell Williams"],
     "J Balvin": ["J Balvin"],
     "Salehe Bembury": ["Salehe Bembury"],
-    "G-Dragon": ["G-Dragon", "G Dragon", "GD", "PEACEMINUSONE"],
+    "KAWS": ["KAWS"],
+    "Takashi Murakami": ["Takashi Murakami", "Murakami"],
+    "G-Dragon": ["G-Dragon", "GD", "PEACEMINUSONE"],
+}
+
+BRAND_CATEGORY: Dict[str, str] = {
+    # sports
+    "Nike": CAT_SPORTS, "Jordan": CAT_SPORTS, "adidas": CAT_SPORTS, "New Balance": CAT_SPORTS,
+    "ASICS": CAT_SPORTS, "Puma": CAT_SPORTS, "Converse": CAT_SPORTS, "Reebok": CAT_SPORTS,
+    "Vans": CAT_SPORTS, "Under Armour": CAT_SPORTS, "Mizuno": CAT_SPORTS, "Brooks": CAT_SPORTS,
+    "On": CAT_SPORTS, "HOKA": CAT_SPORTS, "Salomon": CAT_SPORTS, "Saucony": CAT_SPORTS,
+    "Li-Ning": CAT_SPORTS, "ANTA": CAT_SPORTS, "361°": CAT_SPORTS, "Xtep": CAT_SPORTS,
+    "PEAK": CAT_SPORTS, "Descente": CAT_SPORTS, "Fila": CAT_SPORTS, "Kappa": CAT_SPORTS,
+    "YEEZY": CAT_CULTURE,
+
+    # streetwear
+    "Supreme": CAT_STREET, "Stüssy": CAT_STREET, "BAPE": CAT_STREET, "CLOT": CAT_STREET,
+    "KITH": CAT_STREET, "Off-White": CAT_STREET, "Fragment": CAT_STREET, "AMBUSH": CAT_STREET,
+    "Palace": CAT_STREET, "Fear of God": CAT_STREET, "A-COLD-WALL*": CAT_STREET,
+    "Human Made": CAT_STREET, "WTAPS": CAT_STREET, "NEIGHBORHOOD": CAT_STREET, "Rhude": CAT_STREET,
+    "UNDEFEATED": CAT_STREET, "Patta": CAT_STREET, "Noah": CAT_STREET, "Aimé Leon Dore": CAT_STREET,
+    "JJJJound": CAT_STREET, "Stone Island": CAT_STREET, "Comme des Garçons": CAT_STREET,
+
+    # luxury
+    "Dior": CAT_LUXURY, "Louis Vuitton": CAT_LUXURY, "Gucci": CAT_LUXURY, "Balenciaga": CAT_LUXURY,
+    "Prada": CAT_LUXURY, "Givenchy": CAT_LUXURY, "Saint Laurent": CAT_LUXURY, "Alexander McQueen": CAT_LUXURY,
+    "Maison Margiela": CAT_LUXURY, "Rick Owens": CAT_LUXURY, "Versace": CAT_LUXURY, "Burberry": CAT_LUXURY,
+    "Ferragamo": CAT_LUXURY, "Loewe": CAT_LUXURY, "Celine": CAT_LUXURY, "Bottega Veneta": CAT_LUXURY,
+    "Moncler": CAT_LUXURY,
+
+    # jewelry / ip / culture
+    "Tiffany & Co.": CAT_JEWELRY, "Swarovski": CAT_JEWELRY, "Cartier": CAT_JEWELRY,
+    "Bvlgari": CAT_JEWELRY, "Chrome Hearts": CAT_JEWELRY,
+    "Disney": CAT_IP, "Marvel": CAT_IP, "Star Wars": CAT_IP, "NBA": CAT_IP, "NFL": CAT_IP,
+    "PlayStation": CAT_IP, "Pokémon": CAT_IP, "Naruto": CAT_IP, "One Piece": CAT_IP, "Dragon Ball": CAT_IP,
+    "LEGO": CAT_IP, "Hello Kitty": CAT_IP,
+    "Travis Scott": CAT_CULTURE, "Bad Bunny": CAT_CULTURE, "Pharrell": CAT_CULTURE, "J Balvin": CAT_CULTURE,
+    "Salehe Bembury": CAT_CULTURE, "KAWS": CAT_CULTURE, "Takashi Murakami": CAT_CULTURE, "G-Dragon": CAT_CULTURE,
 }
 
 MODEL_BRAND_MAP: Dict[str, str] = {
+    # Jordan / Nike
     "Air Jordan": "Jordan",
     "Jordan": "Jordan",
     "AJ1": "Jordan", "AJ 1": "Jordan",
@@ -146,6 +223,7 @@ MODEL_BRAND_MAP: Dict[str, str] = {
     "Air Force 1": "Nike", "AF1": "Nike",
     "Dunk": "Nike",
     "Air Max": "Nike",
+    "Cortez": "Nike",
     "Vomero": "Nike",
     "Pegasus": "Nike",
     "Kobe": "Nike",
@@ -155,6 +233,7 @@ MODEL_BRAND_MAP: Dict[str, str] = {
     "Foamposite": "Nike",
     "Blazer": "Nike",
 
+    # adidas
     "Samba": "adidas",
     "Gazelle": "adidas",
     "Superstar": "adidas",
@@ -164,7 +243,9 @@ MODEL_BRAND_MAP: Dict[str, str] = {
     "Forum": "adidas",
     "NMD": "adidas",
     "YEEZY": "adidas",
+    "Boost": "adidas",
 
+    # New Balance
     "990": "New Balance",
     "991": "New Balance",
     "992": "New Balance",
@@ -173,11 +254,13 @@ MODEL_BRAND_MAP: Dict[str, str] = {
     "1906R": "New Balance",
     "550": "New Balance",
 
+    # ASICS
     "GEL-Kayano": "ASICS",
     "GEL-Lyte": "ASICS",
     "GEL-Nimbus": "ASICS",
     "GEL": "ASICS",
 
+    # Salomon
     "XT-6": "Salomon",
     "XT-4": "Salomon",
     "ACS Pro": "Salomon",
@@ -192,12 +275,20 @@ LUXURY_MODELS: Dict[str, str] = {
 
 BRAND_WEIGHT: Dict[str, int] = {
     "Nike": 100, "Jordan": 98, "adidas": 95, "New Balance": 85, "ASICS": 75, "Salomon": 70,
+    "HOKA": 62, "Puma": 60, "Vans": 58, "Converse": 55,
+    "Li-Ning": 52, "ANTA": 48, "361°": 45, "Fila": 42,
     "Louis Vuitton": 92, "Dior": 92, "Gucci": 90, "Balenciaga": 88, "Prada": 86,
 }
 
-LUXURY_OR_JEWELRY = {"Dior", "Louis Vuitton", "Gucci", "Balenciaga", "Prada", "Tiffany & Co.", "Swarovski", "Cartier", "Bvlgari", "Chrome Hearts"}
-TOP_STREET_CULTURE = {"Travis Scott", "Off-White", "Supreme", "Stüssy", "KITH", "CLOT", "Fragment", "A Ma Maniére", "Aimé Leon Dore", "Bad Bunny", "Pharrell", "J Balvin", "Salehe Bembury", "G-Dragon"}
-
+LUXURY_OR_JEWELRY = {
+    "Dior", "Louis Vuitton", "Gucci", "Balenciaga", "Prada",
+    "Tiffany & Co.", "Swarovski", "Cartier", "Bvlgari", "Chrome Hearts"
+}
+TOP_STREET_CULTURE = {
+    "Travis Scott", "Off-White", "Supreme", "Stüssy", "KITH", "CLOT", "Fragment",
+    "A Ma Maniére", "Aimé Leon Dore", "Bad Bunny", "Pharrell", "J Balvin",
+    "Salehe Bembury", "G-Dragon"
+}
 
 # =========================
 # Data Structures
@@ -219,7 +310,6 @@ class ShoeItem:
     brand_weight: int
     release_days: Optional[int]
     detected_at: str
-
 
 # =========================
 # Utilities
@@ -252,8 +342,8 @@ def http_get(url: str) -> str:
 
 def normalize_title(s: str) -> str:
     s = safe_text(s)
-    return s.replace("’", "'").replace("“", '"').replace("”", '"')
-
+    s = s.replace("’", "'").replace("“", '"').replace("”", '"')
+    return s
 
 # =========================
 # Brand / Collab detection
@@ -283,7 +373,7 @@ def detect_main_brand(title: str) -> str:
             return brand
 
     brands = detect_brands(title)
-    sports_priority = ["Nike", "Jordan", "adidas", "New Balance", "ASICS", "Salomon"]
+    sports_priority = ["Nike", "Jordan", "adidas", "New Balance", "ASICS", "Salomon", "HOKA", "Puma", "Vans", "Converse", "Li-Ning", "ANTA", "361°", "Fila"]
     for b in sports_priority:
         if b in brands:
             return b
@@ -292,34 +382,55 @@ def detect_main_brand(title: str) -> str:
 
 def is_collaboration(title: str, brands: List[str]) -> bool:
     t = (title or "").lower()
-    if any(sig in t for sig in [" x ", "×", " & ", " collaboration", "collaboration", " collab"]):
+    signals = [" x ", "×", " & ", " collaboration", " collab", " collab.", " x"]
+    if any(sig in t for sig in signals):
         return True
     return len(brands) >= 2
+
+# =========================
+# Date / Price / Style patterns
+# =========================
+
+STYLE_CODE_RE = re.compile(r"\b[A-Z0-9]{2,6}\d{2,6}[-–][A-Z0-9]{2,6}\b|\b[A-Z]{1,3}\d{3,6}[-–]\d{3}\b", re.I)
+PRICE_RE = re.compile(r"\$\s?\d{2,5}(?:\.\d{2})?")
+
+MONTH_WORDS = r"(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t|tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)"
+DATE_RE = re.compile(rf"\b{MONTH_WORDS}\s+\d{{1,2}}(?:,\s*\d{{4}})?\b", re.I)
 
 def compute_release_days(release_date: str) -> Optional[int]:
     if not release_date or release_date.strip().lower() == "unknown":
         return None
 
     txt = release_date.strip()
-
     months = {
-        "jan": 1, "january": 1, "feb": 2, "february": 2, "mar": 3, "march": 3,
-        "apr": 4, "april": 4, "may": 5, "jun": 6, "june": 6, "jul": 7, "july": 7,
-        "aug": 8, "august": 8, "sep": 9, "sept": 9, "september": 9, "oct": 10, "october": 10,
-        "nov": 11, "november": 11, "dec": 12, "december": 12,
+        "jan": 1, "january": 1,
+        "feb": 2, "february": 2,
+        "mar": 3, "march": 3,
+        "apr": 4, "april": 4,
+        "may": 5,
+        "jun": 6, "june": 6,
+        "jul": 7, "july": 7,
+        "aug": 8, "august": 8,
+        "sep": 9, "sept": 9, "september": 9,
+        "oct": 10, "october": 10,
+        "nov": 11, "november": 11,
+        "dec": 12, "december": 12,
     }
 
     m = re.search(r"([A-Za-z]+)\s+(\d{1,2})(?:,\s*(\d{4}))?", txt)
     if not m:
-        m = re.search(r"(\d{1,2})[/-](\d{1,2})(?:[/-](\d{2,4}))?", txt)
-        if not m:
+        m2 = re.search(r"(\d{1,2})[/-](\d{1,2})(?:[/-](\d{2,4}))?", txt)
+        if not m2:
             return None
-        mm = int(m.group(1))
-        dd = int(m.group(2))
-        yy = m.group(3)
-        year = int(yy) if yy else datetime.now(TZ_TAIPEI).year
-        if year < 100:
-            year += 2000
+        mm = int(m2.group(1))
+        dd = int(m2.group(2))
+        yy = m2.group(3)
+        if yy:
+            year = int(yy)
+            if year < 100:
+                year += 2000
+        else:
+            year = datetime.now(TZ_TAIPEI).year
         try:
             d = datetime(year, mm, dd, tzinfo=TZ_TAIPEI).date()
         except Exception:
@@ -337,7 +448,10 @@ def compute_release_days(release_date: str) -> Optional[int]:
         if not m.group(3):
             today = datetime.now(TZ_TAIPEI).date()
             if d < today:
-                d = datetime(year + 1, mon, day, tzinfo=TZ_TAIPEI).date()
+                try:
+                    d = datetime(year + 1, mon, day, tzinfo=TZ_TAIPEI).date()
+                except Exception:
+                    pass
 
     today = datetime.now(TZ_TAIPEI).date()
     return (d - today).days
@@ -367,6 +481,7 @@ def calc_priority_score(main_brand: str, collab: List[str], release_days: Option
         level = "B"
     else:
         level = "C"
+
     return score, level
 
 def build_fingerprint(item: ShoeItem) -> str:
@@ -377,16 +492,108 @@ def build_fingerprint(item: ShoeItem) -> str:
     key = f"{item.brand_main}|{style or name}"
     return sha256(key)
 
+# =========================
+# SneakerNews title cleaning (核心修复点)
+# =========================
+
+_PREFIX_CLEAN_RE = re.compile(
+    r"^(Official Images Of( The)?|First Look( At)?( The)?|Detailed Look( At)?( The)?|"
+    r"An Official Look At( The)?|Best Look Yet At( The)?|"
+    r"Photos Of( The)?|Look For( The)?|"
+    r"Here's( The)?|"
+    r"Where To Buy( The)?|"
+    r"Release Date For( The)?|"
+    r""
+    r")\s+",
+    re.I
+)
+
+# 常见“尾巴”关键词：一旦出现，优先截断（保留前面的鞋名主体）
+_TAIL_CUT_KEYWORDS = [
+    " releases", " releasing", " drops", " dropping", " launches", " launching",
+    " arrives", " arriving", " officially", " official images", " first look",
+    " revealed", " revealed in", " revealed at", " surfaces", " appears",
+    " on the way", " set to", " coming", " returns", " return",
+    " gets", " get", " for", " in paris", " in tokyo", " in",
+]
+
+# 试图在标题里抽“像鞋名的片段”
+# 例：Official Images Of The Women's Nike Air Max 95 OG "Neon"
+_SHOE_LIKE_RE = re.compile(
+    r"(?P<shoe>(Nike|Air Jordan|Jordan|adidas|New Balance|ASICS|Salomon|Puma|Vans|Converse)\b.*?)(?:$|\s+(Releases|Launches|Drops|Dropping|Arrives|Revealed|Official|First|Where|Release))",
+    re.I
+)
+
+def clean_shoes_name_from_title(title: str) -> str:
+    t = normalize_title(title)
+
+    # 1) 去掉常见前缀
+    t2 = _PREFIX_CLEAN_RE.sub("", t).strip()
+
+    # 2) 去掉“Women’s / Men's / The / A”等对鞋名无贡献的前置词（保守做）
+    t2 = re.sub(r"^(The|A|An)\s+", "", t2, flags=re.I).strip()
+    t2 = re.sub(r"^(Women'?s|Men'?s|Kid'?s|GS)\s+", "", t2, flags=re.I).strip()
+
+    # 3) 尝试从中间抽鞋名片段（对 SneakerNews 很关键）
+    m = _SHOE_LIKE_RE.search(t2)
+    if m:
+        candidate = m.group("shoe").strip()
+    else:
+        candidate = t2
+
+    # 4) 按“尾巴关键词”截断（Releases / Revealed / etc）
+    cand_l = candidate.lower()
+    cut_pos = None
+    for kw in _TAIL_CUT_KEYWORDS:
+        idx = cand_l.find(kw)
+        if idx != -1:
+            cut_pos = idx if cut_pos is None else min(cut_pos, idx)
+    if cut_pos is not None and cut_pos > 0:
+        candidate = candidate[:cut_pos].strip()
+
+    # 5) 再清一次：去掉多余结尾标点
+    candidate = candidate.strip(" -–|:•·").strip()
+    candidate = re.sub(r"\s+", " ", candidate).strip()
+
+    # 6) 太短就回退原标题（避免抽坏）
+    if len(candidate) < 8:
+        return normalize_title(title)
+
+    return candidate
 
 # =========================
-# Parsing helpers
+# Category / Tag (按你模板输出)
 # =========================
 
-STYLE_CODE_RE = re.compile(r"\b[A-Z0-9]{2,6}\d{2,6}[-–][A-Z0-9]{2,6}\b|\b[A-Z]{1,3}\d{3,6}[-–]\d{3}\b|\b[A-Z]{1,3}\d{4,6}\b", re.I)
-PRICE_RE = re.compile(r"\$\s?\d{2,5}(?:\.\d{2})?")
-MONTH_WORDS = r"(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t|tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)"
-DATE_RE = re.compile(rf"\b{MONTH_WORDS}\s+\d{{1,2}}(?:,\s*\d{{4}})?\b", re.I)
-DATE_WITH_YEAR_RE = re.compile(rf"\b{MONTH_WORDS}\s+\d{{1,2}},\s*\d{{4}}\b", re.I)
+def build_tag(main_brand: str, collab: List[str]) -> str:
+    if collab:
+        parts = [main_brand] + collab
+        # 使用 “×” 连接；多方联名也适配
+        return " × ".join(parts)
+    return main_brand if main_brand != "Unknown" else "Unknown"
+
+def build_category(main_brand: str, collab: List[str]) -> str:
+    if not collab:
+        return "General Release"
+
+    cats = []
+    for b in collab:
+        cats.append(BRAND_CATEGORY.get(b, CAT_CULTURE))
+
+    # 规则：只要有珠宝 > 奢侈 > IP > 街头 > 运动
+    if any(c == CAT_JEWELRY for c in cats):
+        return "Jewelry Collaboration"
+    if any(c == CAT_LUXURY for c in cats):
+        return "Luxury Collaboration"
+    if any(c == CAT_IP for c in cats):
+        return "IP Collaboration"
+    if any(c == CAT_STREET for c in cats):
+        return "Streetwear Collaboration"
+    return "Sports Collaboration"
+
+# =========================
+# Parsing: Calendar (SBD/SN release-dates pages)
+# =========================
 
 def extract_fields_from_text(text: str) -> Tuple[str, str, str, str]:
     t = safe_text(text)
@@ -406,129 +613,20 @@ def extract_fields_from_text(text: str) -> Tuple[str, str, str, str]:
     if md:
         rdate = md.group(0)
 
-    cleaned = re.sub(r"(Style\s*Code|Release\s*Date|Retail\s*Price|Price)\s*:?\s*", " ", t, flags=re.I)
+    cleaned = re.sub(r"(Style\s*Code|Release\s*Date|Price)\s*:?\s*", " ", t, flags=re.I)
     cleaned = re.sub(r"\s+", " ", cleaned).strip()
+
     shoes = cleaned
     if len(shoes) > 120:
         shoes = shoes[:120].rstrip() + "…"
 
     return shoes or "Unknown", style, rdate, price
 
-
-# =========================
-# Parsing: SneakerNews Calendar (IMPORTANT FIX)
-# =========================
-
-def parse_sneakernews_calendar(soup: BeautifulSoup, base_url: str, source_name: str) -> List[ShoeItem]:
-    """
-    SneakerNews /release-dates/ 是“鞋款条目”结构：
-    - 鞋名在 h2/## 的链接里
-    - 同一条目容器里包含 Retail Price / Style Code / 日期
-    用结构化提取，避免把页面其他 a/li 文案当鞋名。
-    """
-    items: List[ShoeItem] = []
-
-    # 页面里鞋名基本都在 h2 a[href]
-    for a in soup.select("h2 a[href]"):
-        title = normalize_title(a.get_text(" ").strip())
-        if not title or len(title) < 4:
-            continue
-
-        href = a.get("href") or ""
-        url = urljoin(base_url, href)
-
-        # 找到该 h2 的“条目容器”，从里面抽字段
-        h2 = a.find_parent("h2")
-        container = None
-        if h2:
-            # 往上找一个较大的块（div/section/article）
-            container = h2.find_parent(["article", "section", "div"])
-        if container is None:
-            container = h2 or a
-
-        blob = safe_text(container.get_text(" "))
-
-        # 日期：优先带年份的（January 27, 2026），找不到再用短日期
-        release_date = "Unknown"
-        mdy = DATE_WITH_YEAR_RE.search(blob)
-        if mdy:
-            release_date = mdy.group(0)
-        else:
-            md = DATE_RE.search(blob)
-            if md:
-                release_date = md.group(0)
-
-        # Style Code：优先 “Style Code: XXX”
-        style_code = "Unknown"
-        m_sc = re.search(r"Style\s*Code:\s*([A-Z0-9\-–]{4,25})", blob, re.I)
-        if m_sc:
-            style_code = m_sc.group(1).replace("–", "-").upper()
-        else:
-            m = STYLE_CODE_RE.search(blob)
-            if m:
-                style_code = m.group(0).replace("–", "-").upper()
-
-        # Price：优先 Retail Price
-        price = "Unknown"
-        m_pr = re.search(r"Retail\s*Price:\s*(\$\s?\d{2,5}(?:\.\d{2})?)", blob, re.I)
-        if m_pr:
-            price = m_pr.group(1).replace(" ", "")
-        else:
-            mp = PRICE_RE.search(blob)
-            if mp:
-                price = mp.group(0).replace(" ", "")
-
-        main_brand = detect_main_brand(title)
-        brands_all = detect_brands(title)
-        collab: List[str] = []
-        if is_collaboration(title, brands_all):
-            collab = [b for b in brands_all if b != main_brand]
-
-        # Yeezy 特判
-        if "YEEZY" in brands_all:
-            main_brand = "adidas"
-            if "YEEZY" not in collab:
-                collab.append("YEEZY")
-
-        rd_days = compute_release_days(release_date)
-        p_score, level = calc_priority_score(main_brand, collab, rd_days)
-
-        items.append(ShoeItem(
-            source=source_name,
-            source_type="calendar",
-            url=url,
-            shoes_name=title,
-            style_code=style_code,
-            release_date=release_date,
-            price=price,
-            brand_main=main_brand,
-            brand_collab=collab,
-            priority=level,
-            priority_score=p_score,
-            brand_weight=BRAND_WEIGHT.get(main_brand, 35),
-            release_days=rd_days,
-            detected_at=now_taipei_iso(),
-        ))
-
-    # 排序并截断（优先级 > 品牌权重 > 发售临近）
-    items = dedupe_items(items)
-    items.sort(key=sort_key, reverse=True)
-    return items[:MAX_PUSH_ITEMS_PER_RUN * 2]
-
-
-# =========================
-# Parsing: Generic Calendar (SBD 等)
-# =========================
-
 def parse_calendar_page(html: str, base_url: str, source_name: str) -> List[ShoeItem]:
     soup = BeautifulSoup(html, "html.parser")
 
-    # ✅ SneakerNews calendar special parser
-    if "sneakernews.com" in base_url and ("/release-dates" in base_url or "/air-jordan-release-dates" in base_url):
-        return parse_sneakernews_calendar(soup, base_url, source_name)
-
     blocks: List[Tuple[str, str]] = []
-    for a in soup.select("a[href]"):
+    for a in soup.select("a"):
         href = a.get("href") or ""
         text = safe_text(a.get_text(" "))
         if not text or len(text) < 6:
@@ -564,7 +662,7 @@ def parse_calendar_page(html: str, base_url: str, source_name: str) -> List[Shoe
 
         main_brand = detect_main_brand(shoes_name)
         brands_all = detect_brands(shoes_name)
-        collab: List[str] = []
+        collab = []
         if is_collaboration(shoes_name, brands_all):
             collab = [b for b in brands_all if b != main_brand]
 
@@ -593,18 +691,16 @@ def parse_calendar_page(html: str, base_url: str, source_name: str) -> List[Shoe
             detected_at=now_taipei_iso(),
         ))
 
-    items = dedupe_items(items)
-    items.sort(key=sort_key, reverse=True)
+    items.sort(key=lambda x: (priority_rank(x.priority), x.brand_weight, -(9999 if x.release_days is None else (9999 - max(0, x.release_days)))), reverse=True)
     return items[:MAX_PUSH_ITEMS_PER_RUN * 2]
 
-
 # =========================
-# Parsing: News
+# Parsing: News (SBD/SN latest pages -> article -> fields)
 # =========================
 
 def extract_article_links(html: str, base_url: str) -> List[str]:
     soup = BeautifulSoup(html, "html.parser")
-    links: List[str] = []
+    links = []
     for a in soup.select("a[href]"):
         href = a.get("href") or ""
         if not href:
@@ -613,6 +709,7 @@ def extract_article_links(html: str, base_url: str) -> List[str]:
         p = urlparse(abs_url)
         if p.scheme not in ("http", "https"):
             continue
+
         if any(x in abs_url for x in ["/category/", "/tag/", "/page/", "/author/", "/wp-admin", "/wp-content", "#", "mailto:"]):
             continue
 
@@ -635,32 +732,33 @@ def extract_article_links(html: str, base_url: str) -> List[str]:
 def parse_article(html: str, url: str, source_name: str) -> Optional[ShoeItem]:
     soup = BeautifulSoup(html, "html.parser")
 
+    # title
     title = ""
     h1 = soup.find("h1")
     if h1:
         title = safe_text(h1.get_text(" "))
-    if not title:
-        title = safe_text(soup.title.get_text(" ")) if soup.title else ""
+    if not title and soup.title:
+        title = safe_text(soup.title.get_text(" "))
     title = normalize_title(title) or "Unknown"
 
-    # body containers (尽量只取文章主体)
-    body = ""
+    # body text (for brand/collab signals)
     containers = []
-    for sel in ["article", ".entry-content", ".post-content", ".single-post", "main"]:
+    for sel in ["article", ".entry-content", ".post-content", ".single-post", ".post", "main"]:
         containers.extend(soup.select(sel))
     if containers:
         body = safe_text(" ".join(c.get_text(" ") for c in containers[:2]))
     else:
         body = safe_text(soup.get_text(" "))
 
-    shoes_name = title
-    style_code = "Unknown"
-    release_date = "Unknown"
-    price = "Unknown"
-
     labeled = soup.get_text("\n")
 
-    m_sc = re.search(r"(Style\s*Code|SKU)\s*[:\-]\s*([A-Z0-9\-–]{6,25})", labeled, re.I)
+    # SneakerNews title cleaning (only apply to SneakerNews)
+    shoes_name = title
+    if "sneakernews.com" in urlparse(url).netloc:
+        shoes_name = clean_shoes_name_from_title(title)
+
+    style_code = "Unknown"
+    m_sc = re.search(r"(Style\s*Code|SKU)\s*[:\-]\s*([A-Z0-9\-–]{6,20})", labeled, re.I)
     if m_sc:
         style_code = m_sc.group(2).replace("–", "-").upper()
     else:
@@ -668,6 +766,7 @@ def parse_article(html: str, url: str, source_name: str) -> Optional[ShoeItem]:
         if m:
             style_code = m.group(0).replace("–", "-").upper()
 
+    price = "Unknown"
     m_pr = re.search(r"(Price|Retail)\s*[:\-]\s*(\$\s?\d{2,5}(?:\.\d{2})?)", labeled, re.I)
     if m_pr:
         price = m_pr.group(2).replace(" ", "")
@@ -676,6 +775,7 @@ def parse_article(html: str, url: str, source_name: str) -> Optional[ShoeItem]:
         if mp:
             price = mp.group(0).replace(" ", "")
 
+    release_date = "Unknown"
     m_dt = re.search(r"(Release\s*Date|Dropping|Launch(?:es)?)\s*[:\-]\s*(" + MONTH_WORDS + r"\s+\d{1,2}(?:,\s*\d{4})?)", labeled, re.I)
     if m_dt:
         release_date = m_dt.group(2)
@@ -684,30 +784,30 @@ def parse_article(html: str, url: str, source_name: str) -> Optional[ShoeItem]:
         if md:
             release_date = md.group(0)
 
+    # Determine brands/collab
     main_brand = detect_main_brand(shoes_name)
+    brands_all = detect_brands(shoes_name + " " + body[:600])
 
-    # ✅ 关键修正：brands/collab 只看标题（避免 SneakerNews 页眉/介绍文案污染）
-    brands_all = detect_brands(shoes_name)
-
-    sneakerish = (main_brand != "Unknown") or (style_code != "Unknown") or (price != "Unknown") or (release_date != "Unknown")
-    if not sneakerish:
-        return None
+    # If title has no strong sports model but has Off-White, allow Off-White as main
+    if "Off-White" in brands_all and main_brand in ("Nike", "Unknown"):
+        nike_model_signals = ["air force", "af1", "dunk", "air max", "jordan", "kobe", "vomero", "pegasus"]
+        if not any(sig in shoes_name.lower() for sig in nike_model_signals):
+            main_brand = "Off-White"
 
     collab: List[str] = []
     if is_collaboration(shoes_name, brands_all):
         collab = [b for b in brands_all if b != main_brand]
 
-    # Off-White 自主品牌特判（你之前的逻辑保留）
-    if "Off-White" in brands_all and main_brand in ("Nike", "Unknown"):
-        nike_model_signals = ["air force", "af1", "dunk", "air max", "jordan", "kobe", "vomero", "pegasus"]
-        if not any(sig in shoes_name.lower() for sig in nike_model_signals):
-            main_brand = "Off-White"
-            collab = [b for b in brands_all if b != main_brand]
-
+    # Yeezy special
     if "YEEZY" in brands_all:
         main_brand = "adidas"
         if "YEEZY" not in collab:
             collab.append("YEEZY")
+
+    # Filter: ensure sneaker-ish
+    sneakerish = (main_brand != "Unknown") or (style_code != "Unknown") or (price != "Unknown") or (release_date != "Unknown")
+    if not sneakerish:
+        return None
 
     rd_days = compute_release_days(release_date)
     p_score, level = calc_priority_score(main_brand, collab, rd_days)
@@ -716,7 +816,7 @@ def parse_article(html: str, url: str, source_name: str) -> Optional[ShoeItem]:
         source=source_name,
         source_type="news",
         url=url,
-        shoes_name=shoes_name,
+        shoes_name=normalize_title(shoes_name),
         style_code=style_code or "Unknown",
         release_date=release_date or "Unknown",
         price=price or "Unknown",
@@ -729,180 +829,203 @@ def parse_article(html: str, url: str, source_name: str) -> Optional[ShoeItem]:
         detected_at=now_taipei_iso(),
     )
 
-
 # =========================
-# Dedupe + Sorting
-# =========================
-
-def dedupe_items(items: List[ShoeItem]) -> List[ShoeItem]:
-    best: Dict[str, ShoeItem] = {}
-    for it in items:
-        fp = build_fingerprint(it)
-        if fp not in best:
-            best[fp] = it
-        else:
-            # keep higher score version
-            if it.priority_score > best[fp].priority_score:
-                best[fp] = it
-    return list(best.values())
-
-def sort_key(it: ShoeItem) -> Tuple[int, int, int]:
-    # Priority > BrandWeight > ReleaseDate(closer is better)
-    pr_map = {"S": 4, "A": 3, "B": 2, "C": 1}
-    pr = pr_map.get(it.priority, 0)
-    bw = it.brand_weight or 0
-    # closer -> higher score
-    if it.release_days is None:
-        rs = 0
-    else:
-        rs = 9999 - max(min(it.release_days, 9999), -9999)
-    return (pr, bw, rs)
-
-
-# =========================
-# Push (Telegram / WeCom / GitHub Issue Comment)
+# Sorting / Priority
 # =========================
 
-def format_item(it: ShoeItem) -> str:
-    is_collab = "Collaboration" if it.brand_collab else "General"
+def priority_rank(p: str) -> int:
+    return {"S": 4, "A": 3, "B": 2, "C": 1}.get((p or "").strip().upper(), 0)
+
+def sort_items(items: List[ShoeItem]) -> List[ShoeItem]:
+    # Priority > BrandWeight > ReleaseDate(nearer first; unknown last)
+    def key(x: ShoeItem):
+        rd = x.release_days
+        rd_sort = 999999 if rd is None else max(0, rd)
+        return (priority_rank(x.priority), x.brand_weight, -x.priority_score, -1 * (999999 - rd_sort))
+    return sorted(items, key=key, reverse=True)
+
+# =========================
+# Push formatting (你要的模板)
+# =========================
+
+def format_push_message(item: ShoeItem) -> str:
+    collab_flag = " · Collaboration" if item.brand_collab else ""
     header = f""
 
+    tag = build_tag(item.brand_main, item.brand_collab)
+    category = build_category(item.brand_main, item.brand_collab)
+
+    # 字段之间不留空行
     lines = [
         header,
-        "",
-        f"Shoes Name: {it.shoes_name}",
-        f"Style Code: {it.style_code}",
-        f"Release Date: {it.release_date}",
-        f"Price: {it.price}",
-        "",
-        f"Brand_Main: {it.brand_main}",
+        f"Shoes：{item.shoes_name}",
+        f"Style Code: {item.style_code}",
+        f"Release Date: {item.release_date}",
+        f"Price: {item.price}",
+        f"Tag：{tag}",
+        f"Category：{category}",
+        f"Priority：{item.priority}",
     ]
-    if it.brand_collab:
-        lines.append(f"Brand_Collab: {', '.join(it.brand_collab)}")
-    lines.extend([
-        f"Source: {it.source_type} | {it.source}",
-        f"URL: {it.url}",
-    ])
     return "\n".join(lines)
 
-def send_telegram(text: str) -> bool:
-    token = os.getenv("TG_BOT_TOKEN") or ""
-    chat_id = os.getenv("TG_CHAT_ID") or ""
-    if not token or not chat_id:
-        return False
-    api = f"https://api.telegram.org/bot{token}/sendMessage"
-    r = requests.post(api, json={"chat_id": chat_id, "text": text, "disable_web_page_preview": True}, timeout=REQUEST_TIMEOUT)
-    return r.ok
+# =========================
+# Push: Telegram / WeCom / GitHub Issue comment
+# =========================
 
-def send_wecom(text: str) -> bool:
-    webhook = os.getenv("WECOM_WEBHOOK") or os.getenv("WECOM_WEBHOOK_URL") or ""
-    if not webhook:
-        return False
+def send_telegram(bot_token: str, chat_id: str, text: str) -> None:
+    if not bot_token or not chat_id:
+        return
+    api = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+    payload = {
+        "chat_id": chat_id,
+        "text": text,
+        "disable_web_page_preview": True,
+    }
+    r = requests.post(api, json=payload, timeout=REQUEST_TIMEOUT)
+    r.raise_for_status()
+
+def send_wecom(webhook_url: str, text: str) -> None:
+    if not webhook_url:
+        return
     payload = {"msgtype": "text", "text": {"content": text}}
-    r = requests.post(webhook, json=payload, timeout=REQUEST_TIMEOUT)
-    return r.ok
+    r = requests.post(webhook_url, json=payload, timeout=REQUEST_TIMEOUT)
+    r.raise_for_status()
 
-def github_issue_comment(text: str) -> bool:
-    token = os.getenv("GITHUB_TOKEN") or ""
-    repo = os.getenv("GITHUB_REPOSITORY") or ""
-    issue_number = os.getenv("ISSUE_NUMBER") or ""
+def post_github_issue_comment(token: str, repo: str, issue_number: str, body: str) -> None:
     if not token or not repo or not issue_number:
-        return False
+        return
     api = f"https://api.github.com/repos/{repo}/issues/{issue_number}/comments"
-    r = requests.post(
-        api,
-        headers={"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json"},
-        json={"body": text},
-        timeout=REQUEST_TIMEOUT,
-    )
-    return r.ok
-
-def push_text(text: str) -> None:
-    # Try Telegram / WeCom; GitHub Issue as fallback/also
-    tg_ok = send_telegram(text)
-    wc_ok = send_wecom(text)
-    gh_ok = github_issue_comment(text)
-    print(f"[push] telegram={tg_ok} wecom={wc_ok} github_issue_comment={gh_ok}")
-
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Accept": "application/vnd.github+json",
+        "User-Agent": "ColdTreasure-Monitor",
+    }
+    r = requests.post(api, headers=headers, json={"body": body}, timeout=REQUEST_TIMEOUT)
+    r.raise_for_status()
 
 # =========================
-# Main
+# Dedupe / State maintenance
 # =========================
 
-def collect_calendar_items() -> List[ShoeItem]:
-    all_items: List[ShoeItem] = []
+def prune_sent(sent: Dict[str, Any], keep_days: int = 45) -> Dict[str, Any]:
+    # remove old fingerprints to keep state small
+    cutoff = datetime.now(TZ_TAIPEI) - timedelta(days=keep_days)
+    out = {}
+    for fp, meta in (sent or {}).items():
+        ts = None
+        if isinstance(meta, dict):
+            ts = meta.get("ts")
+        elif isinstance(meta, str):
+            ts = meta
+        if not ts:
+            out[fp] = meta
+            continue
+        try:
+            dt = datetime.fromisoformat(ts)
+        except Exception:
+            out[fp] = meta
+            continue
+        if dt >= cutoff:
+            out[fp] = meta
+    return out
+
+# =========================
+# Main run
+# =========================
+
+def run() -> int:
+    gh_token = os.getenv("GITHUB_TOKEN", "")
+    gh_repo = os.getenv("GITHUB_REPOSITORY", "")
+    issue_number = os.getenv("ISSUE_NUMBER", "")
+
+    tg_token = os.getenv("TG_BOT_TOKEN", "")
+    tg_chat = os.getenv("TG_CHAT_ID", "")
+    wecom_webhook = os.getenv("WECOM_WEBHOOK", "")
+
+    state = load_state()
+    sent = state.get("sent", {})
+    sent = prune_sent(sent, keep_days=45)
+
+    collected: List[ShoeItem] = []
+
+    # 1) calendars
     for src in CALENDAR_SITES:
         try:
             html = http_get(src["url"])
             items = parse_calendar_page(html, src["url"], src["name"])
-            all_items.extend(items[:MAX_PUSH_ITEMS_PER_RUN * 2])
+            collected.extend(items)
         except Exception as e:
-            print(f"[calendar] failed: {src['url']} err={e}")
-    return all_items
+            print(f"[WARN] calendar fetch/parse failed: {src['name']} | {e}")
 
-def collect_news_items() -> List[ShoeItem]:
-    all_items: List[ShoeItem] = []
+    # 2) news latest -> articles
     for src in NEWS_SOURCES:
         try:
             html = http_get(src["url"])
-            links = extract_article_links(html, src["url"])
-            # limit per source
-            links = links[:MAX_ARTICLES_PER_SOURCE]
+            links = extract_article_links(html, src["url"])[:MAX_ARTICLES_PER_SOURCE]
             for u in links:
                 try:
-                    ahtml = http_get(u)
-                    item = parse_article(ahtml, u, src["name"])
+                    art_html = http_get(u)
+                    item = parse_article(art_html, u, src["name"])
                     if item:
-                        all_items.append(item)
-                except Exception as e2:
-                    print(f"[news] article failed: {u} err={e2}")
+                        collected.append(item)
+                except Exception as e:
+                    print(f"[WARN] article parse failed: {u} | {e}")
         except Exception as e:
-            print(f"[news] failed: {src['url']} err={e}")
-    return all_items
+            print(f"[WARN] news fetch failed: {src['name']} | {e}")
 
-def main():
-    state = load_state()
-    sent: Dict[str, Any] = state.get("sent", {})  # fingerprint -> last_sent_iso
+    # 3) dedupe within run
+    uniq: Dict[str, ShoeItem] = {}
+    for it in collected:
+        fp = build_fingerprint(it)
+        # keep the higher-priority one if collision
+        if fp not in uniq:
+            uniq[fp] = it
+        else:
+            if priority_rank(it.priority) > priority_rank(uniq[fp].priority):
+                uniq[fp] = it
+            elif it.priority_score > uniq[fp].priority_score:
+                uniq[fp] = it
 
-    items = []
-    items.extend(collect_calendar_items())
-    items.extend(collect_news_items())
+    items_sorted = sort_items(list(uniq.values()))
 
-    # final dedupe + sort
-    items = dedupe_items(items)
-    items.sort(key=sort_key, reverse=True)
+    # 4) push only "new"
+    pushed = 0
+    for it in items_sorted:
+        if pushed >= MAX_PUSH_ITEMS_PER_RUN:
+            break
 
-    # filter new (dedupe by fingerprint)
-    new_items: List[ShoeItem] = []
-    for it in items:
         fp = build_fingerprint(it)
         if fp in sent:
             continue
-        new_items.append(it)
 
-    # cap push per run
-    new_items = new_items[:MAX_PUSH_ITEMS_PER_RUN]
+        msg = format_push_message(it)
 
-    if not new_items:
-        print("No new items.")
-        return
+        # Telegram
+        try:
+            send_telegram(tg_token, tg_chat, msg)
+        except Exception as e:
+            print(f"[WARN] Telegram send failed: {e}")
 
-    # push one-by-one (safer for telegram length)
-    pushed = 0
-    for it in new_items:
-        text = format_item(it)
-        push_text(text)
-        fp = build_fingerprint(it)
-        sent[fp] = now_taipei_iso()
+        # WeCom
+        try:
+            send_wecom(wecom_webhook, msg)
+        except Exception as e:
+            print(f"[WARN] WeCom send failed: {e}")
+
+        # GitHub Issue comment (triggers email notifications if you watch the repo/issue)
+        try:
+            post_github_issue_comment(gh_token, gh_repo, issue_number, msg)
+        except Exception as e:
+            print(f"[WARN] GitHub comment failed: {e}")
+
+        sent[fp] = {"ts": now_taipei_iso()}
         pushed += 1
-        time.sleep(0.8)
 
     state["sent"] = sent
-    state["last_run"] = now_taipei_iso()
-    state["pushed_last_run"] = pushed
     save_state(state)
 
     print(f"Pushed {pushed} items.")
+    return 0
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(run())
