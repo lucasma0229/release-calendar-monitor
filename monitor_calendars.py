@@ -709,7 +709,7 @@ def parse_calendar_page(html: str, base_url: str, source_name: str) -> List[Shoe
         main_brand = detect_main_brand(shoes_name)
         brands_all = detect_brands(shoes_name)
         collab = []
-        if is_collaboration(shoes_name, brands_all):
+        if is_collaboration(shoes_name, brands_all, main_brand):
             collab = [b for b in brands_all if b != main_brand]
 
         if "YEEZY" in brands_all:
