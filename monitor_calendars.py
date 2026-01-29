@@ -803,7 +803,7 @@ def parse_article(html: str, url: str, source_name: str) -> Optional[ShoeItem]:
 
     # Determine brands/collab
     main_brand = detect_main_brand(shoes_name)
-    brands_all = detect_brands(shoes_name + " " + body[:600])
+    brands_all = detect_brands(shoes_name)
 
     # If title has no strong sports model but has Off-White, allow Off-White as main
     if "Off-White" in brands_all and main_brand in ("Nike", "Unknown"):
