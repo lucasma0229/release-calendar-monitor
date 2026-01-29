@@ -349,12 +349,29 @@ def normalize_title(s: str) -> str:
 # Brand / Collab detection
 # =========================
 
+# ---- brand detect (safer) ----
+_SHORT_ALIAS = {"on", "ua", "sb", "nb", "lv", "gd"}  # 可按需增减
+
+def _alias_pattern(alias: str) -> re.Pattern:
+    a = alias.strip()
+    a_norm = re.escape(a)
+    # 对很短的 alias 强制词边界，避免误命中
+    if len(a) <= 3 or a.lower() in _SHORT_ALIAS:
+        return re.compile(rf"(?<![a-z0-9]){a_norm}(?![a-z0-9])", re.I)
+    return re.compile(a_norm, re.I)
+
+# 预编译，提高速度
+_ALIAS_PATTERNS: Dict[str, List[re.Pattern]] = {
+    brand: [_alias_pattern(a) for a in aliases]
+    for brand, aliases in BRAND_DICT.items()
+}
+
 def detect_brands(text: str) -> List[str]:
-    text_l = (text or "").lower()
+    txt = text or ""
     found: List[str] = []
-    for brand, aliases in BRAND_DICT.items():
-        for a in aliases:
-            if a.lower() in text_l:
+    for brand, patterns in _ALIAS_PATTERNS.items():
+        for pat in patterns:
+            if pat.search(txt):
                 found.append(brand)
                 break
     return sorted(set(found), key=lambda x: x.lower())
