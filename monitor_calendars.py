@@ -929,6 +929,14 @@ def prune_sent(sent: Dict[str, Any], keep_days: int = 45) -> Dict[str, Any]:
             out[fp] = meta
     return out
 
+def mask(s: str) -> str:
+    if not s:
+        return "(empty)"
+    return s[:4] + "..." + s[-4:] if len(s) >= 10 else "***"
+
+def log_env(name: str, value: str) -> None:
+    print(f"[ENV] {name} = {mask(value)}")
+    
 # =========================
 # Main run
 # =========================
