@@ -397,12 +397,41 @@ def detect_main_brand(title: str) -> str:
 
     return brands[0] if brands else "Unknown"
 
-def is_collaboration(title: str, brands: List[str]) -> bool:
+COLLAB_SIGNALS = [
+    " x ", "×", " & ",
+    " collaboration", " collab", " collab.",
+    " in partnership with", " partnered with", " co-branded",
+    " by ",  # 保守信号：只在 strong 白名单命中时才生效（见下）
+]
+
+def is_collaboration(title: str, brands: List[str], main_brand: str) -> bool:
+    """
+    更严格的联名判定：
+    - 不能再用 len(brands) >= 2 这种“噪音必爆”的规则
+    - 需要：结构信号（x/×/&/collab等） 或 强联名白名单命中
+    - 并过滤 Jordan<->Nike 的“母品牌关系”误判
+    """
     t = (title or "").lower()
-    signals = [" x ", "×", " & ", " collaboration", " collab", " collab.", " x"]
-    if any(sig in t for sig in signals):
-        return True
-    return len(brands) >= 2
+    brands = brands or []
+
+    # 过滤母品牌误判：Jordan 的 Nike 不算联名（反向也做一下）
+    filtered = [b for b in brands if b != main_brand]
+    if main_brand == "Jordan":
+        filtered = [b for b in filtered if b != "Nike"]
+    if main_brand == "Nike":
+        filtered = [b for b in filtered if b != "Jordan"]
+
+    # 强联名白名单：这些出现时，即使没有明显 x，也可能是联名/合作
+    strong = any(b in TOP_STREET_CULTURE or b in LUXURY_OR_JEWELRY for b in filtered)
+
+    # 结构信号：标题里出现 x/×/&/collab 等
+    has_signal = any(sig in t for sig in COLLAB_SIGNALS)
+
+    # “by” 这种信号太宽，只有 strong 命中时才认可
+    if " by " in t and not strong:
+        has_signal = any(sig in t for sig in [" x ", "×", " & ", " collaboration", " collab", " collab."])
+
+    return (has_signal and len(filtered) >= 1) or strong
 
 # =========================
 # Date / Price / Style patterns
