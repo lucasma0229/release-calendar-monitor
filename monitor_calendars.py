@@ -942,6 +942,11 @@ def run() -> int:
     tg_chat = os.getenv("TG_CHAT_ID", "")
     wecom_webhook = os.getenv("WECOM_WEBHOOK", "")
 
+    # ✅ 加在这里（就在 state = load_state() 之前）
+    log_env("TG_BOT_TOKEN", tg_token)
+    log_env("TG_CHAT_ID", tg_chat)
+    log_env("WECOM_WEBHOOK", wecom_webhook)
+
     state = load_state()
     sent = state.get("sent", {})
     sent = prune_sent(sent, keep_days=45)
