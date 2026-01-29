@@ -841,7 +841,7 @@ def parse_article(html: str, url: str, source_name: str) -> Optional[ShoeItem]:
             main_brand = "Off-White"
 
     collab: List[str] = []
-    if is_collaboration(shoes_name, brands_all):
+    if is_collaboration(shoes_name, brands_all, main_brand):
         collab = [b for b in brands_all if b != main_brand]
 
     # Yeezy special
