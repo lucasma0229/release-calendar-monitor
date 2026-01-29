@@ -895,7 +895,7 @@ def sort_items(items: List[ShoeItem]) -> List[ShoeItem]:
     def key(x: ShoeItem):
         rd = x.release_days
         rd_sort = 999999 if rd is None else max(0, rd)
-        return (priority_rank(x.priority), x.brand_weight, -x.priority_score, -1 * (999999 - rd_sort))
+        return (priority_rank(x.priority), x.brand_weight, -x.priority_score, -rd_sort)
     return sorted(items, key=key, reverse=True)
 
 # =========================
