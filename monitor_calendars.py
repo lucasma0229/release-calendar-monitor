@@ -903,7 +903,6 @@ def sort_items(items: List[ShoeItem]) -> List[ShoeItem]:
 # =========================
 
 def format_push_message(item: ShoeItem) -> str:
-
     tag = build_tag(item.brand_main, item.brand_collab)
     category = build_category(item.brand_main, item.brand_collab)
 
