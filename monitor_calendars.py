@@ -903,15 +903,12 @@ def sort_items(items: List[ShoeItem]) -> List[ShoeItem]:
 # =========================
 
 def format_push_message(item: ShoeItem) -> str:
-    collab_flag = " · Collaboration" if item.brand_collab else ""
-    header = f""
 
     tag = build_tag(item.brand_main, item.brand_collab)
     category = build_category(item.brand_main, item.brand_collab)
 
     # 字段之间不留空行
     lines = [
-        header,
         f"Shoes：{item.shoes_name}",
         f"Style Code: {item.style_code}",
         f"Release Date: {item.release_date}",
